@@ -1,0 +1,52 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "builds": [
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "posts.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "messages.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "sightings.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "health.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/posts",
+      "dest": "/posts.js"
+    },
+    {
+      "src": "/api/messages",
+      "dest": "/messages.js"
+    },
+    {
+      "src": "/api/sightings",
+      "dest": "/sightings.js"
+    },
+    {
+      "src": "/api/health",
+      "dest": "/health.js"
+    },
+    {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}

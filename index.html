@@ -1,0 +1,889 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>熊本 迷子犬・迷子猫MAP｜迷子ペットの捜索・目撃・保護情報</title>
+<meta name="description" content="熊本県で迷子になった犬・猫を探している方、見かけた方、保護した方を、地図とサイト内メッセージでつなぐ迷子ペット情報MAPです。迷子犬・迷子猫の捜索、目撃、保護情報を共有できます。">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#ffffff">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="熊本 迷子犬・迷子猫MAP">
+<meta property="og:description" content="熊本県の迷子犬・迷子猫の捜索・目撃・保護情報を、地図とサイト内メッセージでつなぎます。">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebSite",
+  "name":"熊本 迷子犬・迷子猫MAP",
+  "description":"熊本県の迷子犬・迷子猫の捜索、目撃、保護情報を共有できる地図型サイト",
+  "inLanguage":"ja-JP",
+  "areaServed":{
+    "@type":"AdministrativeArea",
+    "name":"熊本県"
+  }
+}
+</script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f8fafc;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{position:sticky;top:0;z-index:999;background:#fff;border-bottom:1px solid #e5e7eb;padding:14px 15px}h1{font-size:19px;margin:0}header p{margin:4px 0 0;color:#64748b;font-size:11px}
+.quickstatus{position:sticky;top:66px;z-index:998;background:#ffffffee;backdrop-filter:blur(8px);padding:7px 13px;border-bottom:1px solid #e5e7eb;display:flex;gap:6px;overflow-x:auto}
+.quickstatus button{white-space:nowrap;border:1px solid #cbd5e1;background:#fff;border-radius:999px;padding:8px 10px;font-size:12px;font-weight:900}
+.quickstatus button.on{background:#111827;color:#fff;border-color:#111827}
+main{max-width:720px;margin:auto;padding:13px}.box{background:#fff;border-radius:18px;padding:15px;margin-bottom:13px;box-shadow:0 4px 18px #0000000b}
+h2{font-size:18px;margin:0 0 8px}.lead{font-size:13px;color:#64748b;line-height:1.55;margin:0 0 12px}
+.three{display:grid;gap:9px}.big{border:0;border-radius:16px;padding:15px;text-align:left;font-size:16px;font-weight:900}.big small{display:block;font-size:11px;font-weight:500;margin-top:3px}
+.lost{background:#fee2e2;color:#991b1b}.seen{background:#fef3c7;color:#92400e}.safe{background:#dcfce7;color:#166534}
+.step{font-size:12px;font-weight:900;color:#2563eb;margin:13px 0 5px}.choices{display:flex;flex-wrap:wrap;gap:7px}.choice{border:1px solid #cbd5e1;background:#fff;border-radius:999px;padding:9px 12px;font-weight:800}.choice.on{background:#111827;color:#fff;border-color:#111827}
+label{display:block;font-size:13px;font-weight:800;margin:10px 0 5px}select,input,textarea{width:100%;border:1px solid #cbd5e1;border-radius:12px;padding:11px;font-size:16px;background:#fff}
+textarea{min-height:76px}.optional{font-weight:500;color:#64748b}.hidden{display:none!important}.primary{width:100%;border:0;border-radius:14px;padding:13px;background:#111827;color:#fff;font-size:15px;font-weight:900;margin-top:12px}
+.secondary{width:100%;border:1px solid #cbd5e1;border-radius:13px;padding:11px;background:#fff;font-weight:900;margin-top:8px}
+#map{height:300px;border-radius:14px;margin-top:9px}.mapnote{font-size:12px;color:#64748b;line-height:1.5;margin-top:7px}
+.post{background:#fff;border:1px solid #e5e7eb;border-radius:17px;padding:13px;margin:10px 0}.badge{display:inline-block;background:#f1f5f9;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:900}
+.post h3{font-size:16px;margin:8px 0}.post img{width:100%;max-height:260px;object-fit:cover;border-radius:12px}.contact{width:100%;border:0;border-radius:12px;padding:11px;background:#0f766e;color:#fff;font-weight:900;margin-top:9px}
+.resolve{width:100%;border:1px solid #86efac;border-radius:12px;padding:10px;background:#f0fdf4;color:#166534;font-weight:900;margin-top:7px}
+.sighting-only{width:100%;border:1px solid #f59e0b;border-radius:12px;padding:10px;background:#fffbeb;color:#92400e;font-weight:900;margin-top:7px}
+.inbox{width:100%;border:1px solid #93c5fd;border-radius:12px;padding:11px;background:#eff6ff;color:#1d4ed8;font-weight:900;margin-top:9px}
+.msg-overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:10020;overflow:auto;padding:16px}
+.msg-card{max-width:680px;margin:24px auto;background:#fff;border-radius:22px;padding:18px;box-shadow:0 22px 70px #0004}
+.msg-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.msg-head h2{margin:0}.msg-close{border:0;background:#f1f5f9;border-radius:999px;width:40px;height:40px;font-size:22px}
+.msg-note{background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;border-radius:13px;padding:11px;font-size:12px;line-height:1.6;margin:12px 0}
+.msg-list{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:12px;min-height:150px;max-height:48vh;overflow:auto}
+.msg-row{display:flex;margin:8px 0}.msg-row.mine{justify-content:flex-end}.msg-bubble{max-width:82%;border-radius:15px;padding:10px 12px;background:#fff;border:1px solid #e2e8f0;white-space:pre-wrap;word-break:break-word}.msg-row.mine .msg-bubble{background:#dbeafe;border-color:#93c5fd}.msg-who{font-size:10px;color:#64748b;font-weight:900;margin-bottom:4px}.msg-time{font-size:9px;color:#94a3b8;margin-top:5px}
+.msg-compose{margin-top:12px}.msg-compose textarea{min-height:82px}.msg-send{width:100%;border:0;border-radius:14px;padding:13px;background:#0f766e;color:#fff;font-weight:900;font-size:15px;margin-top:8px}
+.thread-item{width:100%;text-align:left;border:1px solid #dbe3ee;background:#fff;border-radius:14px;padding:12px;margin:8px 0}.thread-item strong{display:block;margin-bottom:5px}.thread-item small{color:#64748b}.thread-preview{color:#334155;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:5px}
+.owner-help{font-size:11px;color:#64748b;margin-top:6px}
+.message-howto{background:#f0fdfa;border:1px solid #99f6e4;color:#134e4a;border-radius:16px;padding:13px;font-size:12px;line-height:1.7;margin-bottom:13px}
+.message-howto b{color:#0f766e}
+.owner-label{display:inline-block;margin:0 0 7px;padding:5px 9px;border-radius:999px;background:#ede9fe;color:#6d28d9;font-size:11px;font-weight:950}
+.btn-help{font-size:11px;color:#64748b;line-height:1.55;margin:5px 2px 8px}
+.auth-error{background:#fff7ed;border:1px solid #fdba74;color:#9a3412;border-radius:12px;padding:10px;font-size:12px;line-height:1.55;margin:10px 0}
+.lock-box{background:#fef2f2;border:1px solid #fca5a5;color:#991b1b;border-radius:14px;padding:12px;font-size:13px;line-height:1.6;margin:10px 0;font-weight:800}
+.owner-auth-submit{width:100%;border:0;border-radius:14px;padding:13px;background:#2563eb;color:#fff;font-weight:900;font-size:15px;margin-top:9px}
+.owner-auth-submit:disabled,#ownerAuthInput:disabled{opacity:.55;cursor:not-allowed}
+.claim{width:100%;border:1px solid #cbd5e1;border-radius:12px;padding:10px;background:#fff;color:#334155;font-weight:900;margin-top:7px}
+.manage-code{width:100%;border:1px solid #c4b5fd;border-radius:12px;padding:10px;background:#f5f3ff;color:#6d28d9;font-weight:900;margin-top:7px}
+.code-box{font-size:24px;letter-spacing:2px;text-align:center;font-weight:950;background:#0f172a;color:#fff;border-radius:14px;padding:16px 10px;margin:12px 0;word-break:break-all}
+.code-warn{background:#fff7ed;border:1px solid #fdba74;color:#9a3412;border-radius:13px;padding:11px;font-size:12px;line-height:1.65}
+.code-copy{width:100%;border:0;border-radius:14px;padding:13px;background:#7c3aed;color:#fff;font-weight:900;font-size:15px;margin-top:10px}
+.guide{background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;border-radius:15px;padding:12px;font-size:12px;line-height:1.65}.empty{text-align:center;color:#64748b;padding:20px;font-size:13px}
+details summary{font-weight:900;cursor:pointer;padding:9px 0}footer{text-align:center;padding:24px;color:#94a3b8;font-size:10px}
+
+.sight-time-selected{
+  background:#0f172a !important;
+  color:#fff !important;
+  border:2px solid #0f172a !important;
+  font-weight:900 !important;
+}
+#sightTimeOK{
+  margin:10px 0 0;
+  padding:10px 12px;
+  border-radius:12px;
+  background:#ecfdf5;
+  color:#166534;
+  font-weight:900;
+}
+
+/* v2.9: スマホで読みやすい大きめ文字 */
+html{-webkit-text-size-adjust:100%}
+body{font-size:18px;line-height:1.72}
+header{padding:16px 15px}
+h1{font-size:22px;line-height:1.35}
+header p{font-size:16px;line-height:1.55;margin-top:6px}
+#topUtility button{font-size:17px!important;line-height:1.35}
+.quickstatus{top:76px}
+.quickstatus button{font-size:16px;padding:10px 12px}
+main{padding:14px}
+.box{padding:17px}
+h2{font-size:22px;line-height:1.4;margin-bottom:10px}
+.lead{font-size:17px;line-height:1.7}
+.big{font-size:19px;padding:17px;line-height:1.45}
+.big small{font-size:16px;line-height:1.55;margin-top:5px}
+.step{font-size:17px;margin-top:16px}
+.choice{font-size:17px;padding:10px 13px}
+label{font-size:17px;margin-top:13px}
+select,input,textarea{font-size:18px;padding:13px}
+.primary,.secondary{font-size:18px;padding:14px}
+.mapnote{font-size:16px;line-height:1.65}
+.guide{font-size:18px;line-height:1.8;padding:15px}
+.message-howto{font-size:18px;line-height:1.8;padding:15px}
+.post{font-size:18px;line-height:1.7;padding:15px}
+.badge{font-size:15px;padding:6px 10px}
+.post h3{font-size:21px;line-height:1.45}
+.contact,.resolve,.sighting-only,.inbox,.claim,.manage-code{
+  font-size:17px;
+  line-height:1.45;
+  padding:14px 12px;
+}
+.owner-label{font-size:16px;padding:7px 10px}
+.owner-context-note{
+  background:#f5f3ff;
+  border:1px solid #ddd6fe;
+  color:#5b21b6;
+  border-radius:13px;
+  padding:11px 12px;
+  margin:0 0 10px;
+  font-size:16px;
+  line-height:1.65;
+  font-weight:800;
+}
+.btn-help{font-size:16px;line-height:1.7;margin:7px 2px 10px}
+.owner-help{font-size:16px;line-height:1.65}
+.msg-note{font-size:17px;line-height:1.7}
+.msg-bubble{font-size:17px;line-height:1.65}
+.msg-who{font-size:14px}
+.msg-time{font-size:13px}
+.msg-compose textarea{font-size:18px}
+.msg-send,.owner-auth-submit,.code-copy{font-size:18px;padding:14px}
+.thread-item{font-size:17px}
+.thread-preview{font-size:16px}
+.auth-error,.lock-box{font-size:17px;line-height:1.7}
+.code-warn{font-size:17px;line-height:1.7}
+.empty{font-size:17px}
+details summary{font-size:17px}
+#aboutSite p{font-size:17px!important;line-height:1.8!important}
+#aboutSite h2{font-size:22px!important;line-height:1.4}
+#aboutSite button{font-size:17px!important}
+footer{font-size:15px;line-height:1.65;padding:26px 18px}
+.seo-intro{
+  max-width:720px;
+  margin:12px auto 0;
+  padding:0 16px;
+  color:#334155;
+  font-size:18px;
+  line-height:1.75;
+  font-weight:700;
+}
+@media (max-width:420px){
+  h1{font-size:21px}
+  body{font-size:18px}
+}
+
+</style></head><body>
+<header><h1>🐾 熊本 迷子犬・迷子猫MAP</h1><p>熊本県の迷子犬・迷子猫を、捜索・目撃・保護情報でつなぐ</p></header>
+<p class="seo-intro">熊本県で迷子になった犬・猫を探している方、見かけた方、保護した方が、地図とメッセージで情報を共有できるサイトです。</p>
+<div id="topUtility" style="display:flex;gap:10px;padding:12px 16px;background:#fff;border-bottom:1px solid #e2e8f0;position:sticky;top:0;z-index:900">
+  <button type="button" onclick="window.scrollTo({top:0,behavior:'smooth'})" style="flex:1;padding:11px 8px;border:1px solid #cbd5e1;border-radius:12px;background:#fff;color:#2563eb;font-weight:900">🏠 トップ</button>
+  <button type="button" onclick="document.getElementById('aboutSite').scrollIntoView({behavior:'smooth',block:'start'})" style="flex:1.4;padding:11px 8px;border:1px solid #cbd5e1;border-radius:12px;background:#fff;color:#2563eb;font-weight:900">🐾 このサイトについて</button>
+</div>
+
+
+<section class="card" style="border:2px solid #ef4444;background:#fff7f7;margin-top:14px">
+  <h2 style="margin:0 0 10px;color:#991b1b">⚠️ 大切なお願い</h2>
+  <p style="font-weight:900;font-size:17px;line-height:1.7;margin:0 0 8px">
+    イタズラや、事実と異なる投稿は絶対にしないでください。
+  </p>
+  <p style="line-height:1.8;margin:0 0 8px">
+    ここには、大切な家族であるペットを真剣に探している方がいます。
+    間違った目撃情報や悪意のある投稿は、飼い主さんを違う場所へ向かわせ、
+    発見を遅らせる可能性があります。
+  </p>
+  <p style="line-height:1.8;margin:0">
+    このサイトは、迷子になったペットを探している人、見かけた人、保護した人を
+    少しでも早くつなぎたいという思いで作った試作サイトです。
+    警察・自治体などの公式サイトではありませんが、
+    <b>本当に困っている方が安心して使える場所</b>を目指しています。
+    思いやりのある正確な情報提供にご協力ください。
+  </p>
+</section>
+
+<main>
+<section class="box"><h2>まず、どれですか？</h2><p class="lead">説明を読まなくても使えるよう、最初は3つだけです。</p><div class="three">
+<button class="big lost" onclick="begin('探しています')">🔴 ペットを探しています<small>いなくなった犬・猫を探したい</small></button>
+<button class="big seen" onclick="begin('見かけました')">👀 ペットを見かけました<small>迷子かもしれない犬・猫を見た</small></button>
+<button class="big safe" onclick="begin('保護しています')">🏠 ペットを保護しています<small>安全な場所で保護している</small></button></div></section>
+<div class="guide">💡 <b>かんたん4ステップ</b><br>
+① 状況を選ぶ<br>
+② 犬・猫と特徴を選ぶ<br>
+③ 地図でだいたいの場所をタップ<br>
+④ 写真があれば追加して投稿<br>
+<b>投稿後に4文字の管理コードが表示されます。</b> メッセージ確認・返信・解決時に使うので保存してください。</div>
+
+<section class="box hidden" id="formBox"><h2 id="title">投稿</h2><form id="form">
+<input type="hidden" id="status"><input type="hidden" id="animal"><input type="hidden" id="size"><input type="hidden" id="hair"><input type="hidden" id="collar"><input type="hidden" id="lat"><input type="hidden" id="lng">
+<div id="compactStatus" style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:#f8fafc;border:1px solid #dbe3ee;border-radius:16px;padding:12px 14px;margin:4px 0 14px">
+  <div><span style="font-size:12px;color:#64748b;font-weight:800">現在の状況</span><br><strong id="compactStatusText">未選択</strong></div>
+  <button type="button" onclick="changeStatusHere()" style="border:1px solid #cbd5e1;background:white;border-radius:12px;padding:9px 13px;font-weight:900;color:#2563eb">変更</button>
+</div>
+<div id="inlineStatusChanger" class="hidden" style="background:#fff;border:2px solid #bfdbfe;border-radius:16px;padding:12px;margin:0 0 14px">
+  <div style="font-weight:900;margin-bottom:8px">どれに変更しますか？</div>
+  <div style="display:grid;gap:8px">
+    <button type="button" class="choice" onclick="begin('探しています',false);closeStatusChanger()">🔴 探しています</button>
+    <button type="button" class="choice" onclick="begin('見かけました',false);closeStatusChanger()">👀 見かけました</button>
+    <button type="button" class="choice" onclick="begin('保護しています',false);closeStatusChanger()">🏠 保護しています</button>
+  </div>
+</div>
+<div class="step">STEP 1　犬・猫を選ぶ</div><div class="choices" data-target="animal"><button type="button" class="choice">🐶 犬</button><button type="button" class="choice">🐱 猫</button><button type="button" class="choice">その他</button></div>
+<div class="step">STEP 2　分かる特徴だけ選ぶ</div>
+<label>犬種・猫種 <span class="optional">（任意）</span></label><select id="breed"><option value="">分からない／選ばない</option><optgroup label="犬"><option>柴犬</option><option>トイプードル</option><option>チワワ</option><option>ダックスフンド</option><option>ポメラニアン</option><option>ミックス犬</option><option>その他の犬種</option></optgroup><optgroup label="猫"><option>雑種猫</option><option>日本猫</option><option>アメリカンショートヘア</option><option>スコティッシュフォールド</option><option>ミックス猫</option><option>その他の猫種</option></optgroup></select>
+<label>毛色 <span class="optional">（任意・複数可）</span></label><div class="choices multi" data-target="colors"><button type="button" class="choice">黒</button><button type="button" class="choice">白</button><button type="button" class="choice">茶</button><button type="button" class="choice">グレー</button><button type="button" class="choice">三毛</button><button type="button" class="choice">その他</button></div>
+<label>大きさ <span class="optional">（任意）</span></label><div class="choices" data-target="size"><button type="button" class="choice">小さい</button><button type="button" class="choice">中くらい</button><button type="button" class="choice">大きい</button><button type="button" class="choice">不明</button></div>
+<label>毛の長さ <span class="optional">（任意）</span></label><div class="choices" data-target="hair"><button type="button" class="choice">短毛</button><button type="button" class="choice">長毛</button><button type="button" class="choice">不明</button></div>
+<label>首輪 <span class="optional">（任意）</span></label><div class="choices" data-target="collar"><button type="button" class="choice">あり</button><button type="button" class="choice">なし</button><button type="button" class="choice">不明</button></div>
+<div class="step">STEP 3　<span id="whereQuestion">どの辺ですか？</span></div>
+<div class="guide" id="whereGuide">📍 地図でだいたいの場所をタップしてください。<b>「この辺」くらいで大丈夫です。</b> 正確な住所は入力しないでください。</div>
+<button type="button" class="secondary" onclick="useLocation()">📍 今いる辺りから選ぶ</button>
+<div id="map"></div>
+<div class="mapnote">ピンは「この辺」という目安です。公開時は正確な自宅位置を載せない設計を想定しています。</div>
+<label id="placeLabel">この辺の目印 <span class="optional">（任意）</span></label><input id="place" placeholder="例：城南町○○公園の近く">
+<div class="step">STEP 4　写真があれば追加</div><input id="photo" type="file" accept="image/*">
+<details><summary>＋ もっと詳しい特徴を書く（任意）</summary><label>特徴・状況</label><textarea id="note" placeholder="例：赤い首輪。人を怖がっていました。"></textarea></details>
+<button class="primary">🐾 この内容で投稿する</button></form></section>
+
+<section class="box"><h2>🗺️ みんなの投稿MAP</h2><p class="lead">赤＝探しています、橙＝見かけました、緑＝保護しています。</p><div id="allMap"></div></section>
+<div class="message-howto">💬 <b>メッセージの使い方</b><br>
+<b>似た子を見た方：</b> 投稿カードの緑色の「この子かも？／情報を送る」から送信できます。<br>
+<b>投稿した方：</b> 青色の「📨 届いたメッセージを見る」から確認・返信できます。<br>
+🔒 メッセージ内容は投稿カードには公開されません。</div>
+<section class="box"><h2>新しい投稿</h2><div id="list"></div></section>
+</main>
+
+<section id="aboutSite" style="margin:28px auto;max-width:760px;padding:0 16px">
+  <div style="background:#fff;border:1px solid #e2e8f0;border-radius:22px;padding:22px;box-shadow:0 8px 24px rgba(15,23,42,.05)">
+    <h2 style="margin:0 0 14px;font-size:1.45rem">🐾 このサイトを作った理由</h2>
+    <p>このサイトは、<strong>令和8年熊本地震をきっかけに、熊本で暮らす一人の住民が作った試作サイトです。</strong></p>
+    <p>地震のあと、管理者自身が犬や猫を見かけることがありました。</p>
+    <div style="background:#f8fafc;border-radius:14px;padding:14px 16px;margin:14px 0;font-weight:700;line-height:1.8">
+      「地震に驚いて家から逃げてしまった子かもしれない」<br>
+      「今も家族が必死に探しているかもしれない」
+    </div>
+    <p>そう思っても、自分一人ではどうすることもできない、もどかしさがありました。</p>
+    <p>大きな災害の直後は、警察・消防・自治体なども人命救助や緊急対応を優先しなければならない状況があります。</p>
+    <p style="font-weight:800">それなら、見かけた人が「この辺で見た」と地図に残すだけでも、探している家族につながるのではないか。</p>
+    <p>そんな思いから、<strong>「熊本 迷子犬・迷子猫MAP」</strong>を作りました。</p>
+    <p>このサイトだけですべてを解決できるとは考えていません。それでも、一つの目撃情報が大切な家族との再会につながるかもしれません。</p>
+    <p style="font-size:1.08rem;font-weight:900;text-align:center;background:#ecfdf5;color:#166534;border-radius:14px;padding:14px">
+      探している人・見かけた人・保護した人を、できるだけ簡単につなぐ。
+    </p>
+    <p style="color:#64748b;font-size:.9rem">※個人で制作・運営している試作サイトです。警察・消防・自治体等が運営する公式サイトではありません。</p>
+  </div>
+
+  <div style="background:#fff;border:1px solid #e2e8f0;border-radius:22px;padding:22px;margin-top:18px">
+    <h2 style="margin:0 0 12px;font-size:1.3rem">☕ この活動を応援していただける方へ</h2>
+    <p><strong>このサイトは無料で利用できます。</strong></p>
+    <p>今後、サイトの維持や機能改善などには費用がかかる場合があります。活動に共感していただける方から、無理のない範囲でご支援いただける仕組みも将来的に検討しています。</p>
+    <p style="background:#eff6ff;color:#1e40af;border-radius:12px;padding:12px;font-weight:800">寄付の有無によって、利用できる機能が変わることはありません。</p>
+    <button type="button" disabled style="width:100%;padding:14px;border:0;border-radius:14px;background:#e2e8f0;color:#64748b;font-weight:900;font-size:1rem">
+      ☕ 運営を応援する（準備中）
+    </button>
+    <p style="text-align:center;color:#94a3b8;font-size:.82rem;margin-bottom:0">※現在は寄付・支援金の受付を行っていません。</p>
+  </div>
+  <button type="button" onclick="window.scrollTo({top:0,behavior:'smooth'})" style="width:100%;margin-top:14px;padding:14px;border:1px solid #cbd5e1;border-radius:14px;background:#fff;color:#2563eb;font-weight:900;font-size:1rem">⬆️ トップへ戻る</button>
+</section>
+
+<footer>試作版 v2.9（SEO・大きな文字・投稿者向け案内改善）｜電話番号・本名・正確な自宅住所などは公開しないでください</footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const EDIT_TOKEN_KEY="kumamotoPetEditTokensV24";
+let editTokens={};
+try{editTokens=JSON.parse(localStorage.getItem(EDIT_TOKEN_KEY)||"{}")||{}}catch(e){editTokens={}}
+function saveEditTokens(){localStorage.setItem(EDIT_TOKEN_KEY,JSON.stringify(editTokens))}
+function makeEditToken(){
+  const a=new Uint8Array(24);crypto.getRandomValues(a);
+  return Array.from(a,b=>b.toString(16).padStart(2,"0")).join("");
+}
+function makeOwnerCode(){
+  // O/0/I/1 は見間違えやすいため使わない。32文字から4文字を暗号学的乱数で選ぶ。
+  const alphabet="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const a=new Uint8Array(4);crypto.getRandomValues(a);
+  return Array.from(a,b=>alphabet[b%alphabet.length]).join("");
+}
+function normalizeOwnerCode(v){
+  const raw=String(v||"").toUpperCase().replace(/[^A-Z0-9]/g,"");
+  const alphabet=/^[ABCDEFGHJKLMNPQRSTUVWXYZ23456789]+$/;
+  // v2.7以降は4文字。v2.6の旧16文字コードも既存投稿のため引き続き受け付ける。
+  if(raw.length===4 && alphabet.test(raw))return raw;
+  if(raw.length===16 && alphabet.test(raw))return raw.match(/.{1,4}/g).join("-");
+  return "";
+}
+async function apiJson(url,options={}){
+  const r=await fetch(url,options);
+  let data=null;
+  try{data=await r.json()}catch(e){}
+  if(!r.ok){
+    const err=new Error((data&&data.error)||("通信エラー "+r.status));
+    err.status=r.status;err.data=data||{};throw err;
+  }
+  return data;
+}
+function escapeHtml(v){
+  return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function safeImage(v){
+  const s=String(v||"");
+  return /^data:image\/(?:jpeg|jpg|png|webp);base64,/i.test(s)?s:"";
+}
+
+const MSG_TOKEN_KEY="kumamotoPetMessageTokensV25";
+let msgTokens={};
+try{msgTokens=JSON.parse(localStorage.getItem(MSG_TOKEN_KEY)||"{}")||{}}catch(e){msgTokens={}}
+function saveMsgTokens(){localStorage.setItem(MSG_TOKEN_KEY,JSON.stringify(msgTokens))}
+function getMsgToken(targetId){
+  const k=String(targetId);
+  if(!msgTokens[k]){msgTokens[k]=makeEditToken();saveMsgTokens()}
+  return msgTokens[k];
+}
+let activeMsg={role:null,targetId:null,threadId:null,clientToken:null};
+function msgDate(v){
+  try{return new Date(v).toLocaleString("ja-JP",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})}catch(e){return ""}
+}
+function messageTargetTitle(p){
+  if(!p)return "投稿へのメッセージ";
+  return `${p.status||"投稿"}｜${p.animal||"ペット"}${p.breed?" "+p.breed:""}`;
+}
+function showMessageModal(){document.getElementById("messageModal").classList.remove("hidden")}
+function closeMessageModal(){document.getElementById("messageModal").classList.add("hidden");activeMsg={role:null,targetId:null,threadId:null,clientToken:null}}
+function closeInboxModal(){document.getElementById("inboxModal").classList.add("hidden")}
+function renderMessages(items){
+  const box=document.getElementById("messageList");
+  if(!items||!items.length){box.innerHTML='<div class="empty">まだメッセージはありません。<br>最初のメッセージを送ってください。</div>';return}
+  box.innerHTML=items.map(m=>{
+    const mine=(activeMsg.role==="visitor"&&m.senderRole==="visitor")||(activeMsg.role==="owner"&&m.senderRole==="owner");
+    const who=mine?"あなた":(activeMsg.role==="owner"?"連絡した人":"投稿者");
+    return `<div class="msg-row ${mine?"mine":""}"><div class="msg-bubble"><div class="msg-who">${who}</div>${escapeHtml(m.body)}<div class="msg-time">${escapeHtml(msgDate(m.createdAt))}</div></div></div>`;
+  }).join("");
+  box.scrollTop=box.scrollHeight;
+}
+async function openMessage(id){
+  const p=posts.find(x=>String(x.id)===String(id));
+  if(!p)return;
+  if(editTokens[String(id)]){openOwnerInbox(id);return}
+  const token=getMsgToken(id);
+  activeMsg={role:"visitor",targetId:Number(id),threadId:null,clientToken:token};
+  document.getElementById("messageTitle").textContent="💬 投稿者にメッセージ";
+  document.getElementById("messageTarget").textContent=messageTargetTitle(p);
+  document.getElementById("messageText").value="";
+  document.getElementById("messageList").innerHTML='<div class="empty">読み込み中…</div>';
+  showMessageModal();
+  try{
+    const data=await apiJson(`/api/messages?view=visitor&targetId=${encodeURIComponent(id)}&clientToken=${encodeURIComponent(token)}`);
+    activeMsg.threadId=data.threadId||null;
+    renderMessages(data.messages||[]);
+  }catch(err){document.getElementById("messageList").innerHTML='<div class="empty">メッセージを読み込めませんでした。</div>';}
+}
+async function openOwnerInbox(targetId){
+  const p=posts.find(x=>String(x.id)===String(targetId));
+  const token=editTokens[String(targetId)];
+  if(!p||!token){alert("この投稿へのメッセージは、投稿した端末または管理コードを入力した端末で確認できます。");return}
+  const modal=document.getElementById("inboxModal");
+  document.getElementById("inboxTarget").textContent=messageTargetTitle(p);
+  const list=document.getElementById("threadList");list.innerHTML='<div class="empty">読み込み中…</div>';
+  modal.classList.remove("hidden");
+  try{
+    const data=await apiJson(`/api/messages?view=owner-inbox&targetId=${encodeURIComponent(targetId)}`,{headers:{"x-owner-code":token}});
+    const threads=data.threads||[];
+    if(!threads.length){list.innerHTML='<div class="empty">まだメッセージは届いていません。</div>';return}
+    list.innerHTML=threads.map((t,i)=>`<button type="button" class="thread-item" onclick="openOwnerThread(${Number(targetId)},${Number(t.threadId)})"><strong>💬 連絡 ${i+1}</strong><small>${escapeHtml(msgDate(t.updatedAt))}｜${Number(t.messageCount)||0}件</small><div class="thread-preview">${escapeHtml(t.latestBody||"")}</div></button>`).join("");
+  }catch(err){list.innerHTML='<div class="empty">メッセージ一覧を読み込めませんでした。</div>';}
+}
+async function openOwnerThread(targetId,threadId){
+  const p=posts.find(x=>String(x.id)===String(targetId));
+  const token=editTokens[String(targetId)];
+  if(!p||!token)return;
+  closeInboxModal();
+  activeMsg={role:"owner",targetId:Number(targetId),threadId:Number(threadId),clientToken:null};
+  document.getElementById("messageTitle").textContent="📨 届いたメッセージ";
+  document.getElementById("messageTarget").textContent=messageTargetTitle(p);
+  document.getElementById("messageText").value="";
+  document.getElementById("messageList").innerHTML='<div class="empty">読み込み中…</div>';
+  showMessageModal();
+  try{
+    const data=await apiJson(`/api/messages?view=owner-thread&targetId=${encodeURIComponent(targetId)}&threadId=${encodeURIComponent(threadId)}`,{headers:{"x-owner-code":token}});
+    renderMessages(data.messages||[]);
+  }catch(err){document.getElementById("messageList").innerHTML='<div class="empty">メッセージを読み込めませんでした。</div>';}
+}
+async function sendMessage(){
+  const text=document.getElementById("messageText").value.trim();
+  if(!text){alert("メッセージを入力してください。");return}
+  const btn=document.getElementById("messageSend");btn.disabled=true;btn.textContent="送信しています…";
+  try{
+    if(activeMsg.role==="visitor"){
+      const data=await apiJson("/api/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({role:"visitor",targetId:activeMsg.targetId,clientToken:activeMsg.clientToken,body:text})});
+      activeMsg.threadId=data.threadId;
+      document.getElementById("messageText").value="";
+      const r=await apiJson(`/api/messages?view=visitor&targetId=${encodeURIComponent(activeMsg.targetId)}&clientToken=${encodeURIComponent(activeMsg.clientToken)}`);
+      renderMessages(r.messages||[]);
+    }else if(activeMsg.role==="owner"){
+      const token=editTokens[String(activeMsg.targetId)];
+      await apiJson("/api/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({role:"owner",targetId:activeMsg.targetId,threadId:activeMsg.threadId,editToken:token,body:text})});
+      document.getElementById("messageText").value="";
+      const r=await apiJson(`/api/messages?view=owner-thread&targetId=${encodeURIComponent(activeMsg.targetId)}&threadId=${encodeURIComponent(activeMsg.threadId)}`,{headers:{"x-owner-code":token}});
+      renderMessages(r.messages||[]);
+    }
+  }catch(err){alert("送信できませんでした。\n"+err.message)}finally{btn.disabled=false;btn.textContent="💬 メッセージを送る"}
+}
+function closeOwnerCodeModal(){document.getElementById("ownerCodeModal").classList.add("hidden")}
+function showManagementCode(id,code,isNew=false){
+  const normalized=normalizeOwnerCode(code)||String(code||"");
+  document.getElementById("ownerCodeValue").textContent=normalized;
+  document.getElementById("ownerCodeModalTitle").textContent=isNew?"🔑 投稿の管理コード":"🔑 管理コード";
+  document.getElementById("ownerCodeIntro").textContent=isNew?"投稿できました。この管理コードを保存してください。":"この投稿の管理コードです。";
+  document.getElementById("ownerCodeModal").classList.remove("hidden");
+}
+function showOwnerCode(id){
+  const code=editTokens[String(id)];
+  if(!code){alert("この端末には管理コードが保存されていません。");return}
+  showManagementCode(id,code,false);
+}
+async function copyOwnerCode(){
+  const code=document.getElementById("ownerCodeValue").textContent.trim();
+  try{
+    await navigator.clipboard.writeText(code);
+    alert("管理コードをコピーしました。");
+  }catch(e){
+    const ta=document.createElement("textarea");ta.value=code;document.body.appendChild(ta);ta.select();
+    try{document.execCommand("copy");alert("管理コードをコピーしました。")}catch(_){alert("コピーできませんでした。スクリーンショットで保存してください。")}ta.remove();
+  }
+}
+let ownerAuthState={id:null,action:"claim",timer:null,lockedUntil:0};
+function closeOwnerAuthModal(){
+  document.getElementById("ownerAuthModal").classList.add("hidden");
+  if(ownerAuthState.timer){clearInterval(ownerAuthState.timer);ownerAuthState.timer=null}
+  ownerAuthState={id:null,action:"claim",timer:null,lockedUntil:0};
+}
+function ownerLockText(seconds){
+  const sec=Math.max(0,Math.ceil(Number(seconds)||0));
+  const m=Math.floor(sec/60),r=sec%60;
+  return `${m}分${String(r).padStart(2,"0")}秒`;
+}
+function clearOwnerAuthLockUI(){
+  const input=document.getElementById("ownerAuthInput"),btn=document.getElementById("ownerAuthSubmit"),box=document.getElementById("ownerLockBox");
+  input.disabled=false;btn.disabled=false;box.classList.add("hidden");box.textContent="";
+  ownerAuthState.lockedUntil=0;
+  if(ownerAuthState.timer){clearInterval(ownerAuthState.timer);ownerAuthState.timer=null}
+}
+function setOwnerAuthLocked(seconds){
+  const sec=Math.max(1,Math.ceil(Number(seconds)||900));
+  ownerAuthState.lockedUntil=Date.now()+sec*1000;
+  const input=document.getElementById("ownerAuthInput"),btn=document.getElementById("ownerAuthSubmit"),box=document.getElementById("ownerLockBox");
+  input.value="";input.disabled=true;btn.disabled=true;box.classList.remove("hidden");
+  const tick=()=>{
+    const left=Math.ceil((ownerAuthState.lockedUntil-Date.now())/1000);
+    if(left<=0){
+      clearOwnerAuthLockUI();
+      const e=document.getElementById("ownerAuthError");e.classList.remove("hidden");e.textContent="🔓 ロックが解除されました。管理コードを入力できます。";
+      return;
+    }
+    box.textContent=`🔒 5回連続で管理コードを間違えたため、この端末はロック中です。あと ${ownerLockText(left)} で再入力できます。`;
+  };
+  tick();
+  if(ownerAuthState.timer)clearInterval(ownerAuthState.timer);
+  ownerAuthState.timer=setInterval(tick,1000);
+}
+async function checkOwnerLockStatus(id){
+  try{
+    return await apiJson(`/api/messages?view=owner-lock-status&targetId=${encodeURIComponent(id)}`);
+  }catch(_){return {locked:false,retryAfter:0}}
+}
+async function openOwnerAuthModal(id,action="claim"){
+  const p=posts.find(x=>String(x.id)===String(id));if(!p)return;
+  ownerAuthState.id=Number(id);ownerAuthState.action=action;
+  const modal=document.getElementById("ownerAuthModal"),input=document.getElementById("ownerAuthInput"),btn=document.getElementById("ownerAuthSubmit"),err=document.getElementById("ownerAuthError");
+  document.getElementById("ownerAuthTitle").textContent=action==="resolve"?"🔑 解決済みにする前の本人確認":"🔑 投稿者の本人確認";
+  document.getElementById("ownerAuthIntro").textContent=action==="resolve"?"この投稿の管理コードを入力してください。確認できた場合だけ「飼い主の元へ戻りました」に変更します。":"この投稿を管理する方は、投稿時に発行された管理コードを入力してください。";
+  btn.textContent=action==="resolve"?"✅ 管理コードを確認して解決済みにする":"🔑 管理コードを確認";
+  input.value="";err.classList.add("hidden");err.textContent="";clearOwnerAuthLockUI();modal.classList.remove("hidden");
+  const st=await checkOwnerLockStatus(id);
+  if(st.locked){setOwnerAuthLocked(st.retryAfter||900)}else{setTimeout(()=>input.focus(),80)}
+}
+async function submitOwnerAuth(){
+  const id=ownerAuthState.id,action=ownerAuthState.action;
+  if(!id)return;
+  const input=document.getElementById("ownerAuthInput"),btn=document.getElementById("ownerAuthSubmit"),err=document.getElementById("ownerAuthError");
+  const code=normalizeOwnerCode(input.value);
+  if(!code){err.classList.remove("hidden");err.textContent="管理コードは英大文字・数字の4文字です（例：A7K9）。※過去の投稿は旧形式の管理コードも使えます。";return}
+  btn.disabled=true;err.classList.add("hidden");
+  try{
+    if(action==="resolve"){
+      await apiJson("/api/posts",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:Number(id),resolved:true,editToken:code})});
+      const p=posts.find(x=>String(x.id)===String(id));if(p)p.resolved=true;
+      editTokens[String(id)]=code;saveEditTokens();closeOwnerAuthModal();render();
+      alert("✅ この投稿を「飼い主の元へ戻りました」に変更しました。");
+    }else{
+      await apiJson(`/api/messages?view=owner-inbox&targetId=${encodeURIComponent(id)}`,{headers:{"x-owner-code":code}});
+      editTokens[String(id)]=code;saveEditTokens();closeOwnerAuthModal();render();
+      alert("投稿者として確認できました。今後この端末では、届いたメッセージの確認・返信や投稿の完了操作ができます。");
+    }
+  }catch(ex){
+    if(ex.status===429){setOwnerAuthLocked(ex.data?.retryAfter||900);return}
+    err.classList.remove("hidden");err.textContent=ex.message||"管理コードが一致しません。";
+  }finally{
+    if(!ownerAuthState.lockedUntil)btn.disabled=false;
+  }
+}
+function claimPost(id){openOwnerAuthModal(id,"claim")}
+
+
+async function compressPhoto(file){
+  if(!file)return "";
+  return await new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onerror=()=>reject(new Error("写真を読み込めませんでした"));
+    reader.onload=()=>{
+      const img=new Image();
+      img.onerror=()=>reject(new Error("写真を読み込めませんでした"));
+      img.onload=()=>{
+        const max=1280,scale=Math.min(1,max/Math.max(img.width,img.height));
+        const c=document.createElement("canvas");
+        c.width=Math.max(1,Math.round(img.width*scale));c.height=Math.max(1,Math.round(img.height*scale));
+        c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+        resolve(c.toDataURL("image/jpeg",0.72));
+      };
+      img.src=reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+function contactPost(i){
+ const posts=load(),p=posts[i]; if(!p)return;
+ const panel=document.getElementById("sightingPanel");
+ panel.classList.remove("hidden");
+ document.getElementById("sightingTarget").textContent=(p.animal||"ペット")+" の投稿への情報";
+ document.getElementById("sightingPostIndex").value=i;
+ setTimeout(()=>{initSightingMap(p.lat,p.lng);panel.scrollIntoView({behavior:"smooth",block:"start"})},60);
+}
+
+let sightMapObj=null,sightMarkerObj=null,sightLat=null,sightLng=null,sightWhen="";
+function openSightReport(p){
+  document.getElementById("sightReport").classList.remove("hidden");
+  document.getElementById("sightTargetId").value=p.id;
+  sightWhen=""; sightLat=null; sightLng=null;
+  document.querySelectorAll(".sightTimeBtn").forEach(x=>x.classList.remove("sight-time-selected"));
+  const timeOK=document.getElementById("sightTimeOK"); if(timeOK) timeOK.classList.add("hidden");
+  document.getElementById("sightNote").value="";
+  document.getElementById("sightDate").classList.add("hidden");
+  setTimeout(()=>{
+    if(sightMapObj){sightMapObj.remove();sightMapObj=null}
+    const a=Number(p.lat)||32.7898,b=Number(p.lng)||130.7417;
+    sightMapObj=L.map("sightMap").setView([a,b],14);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(sightMapObj);
+    sightMapObj.on("click",e=>{
+      sightLat=e.latlng.lat;sightLng=e.latlng.lng;
+      if(sightMarkerObj)sightMarkerObj.remove();
+      sightMarkerObj=L.marker([sightLat,sightLng]).addTo(sightMapObj);
+      document.getElementById("sightPlaceOK").textContent="✅ この辺で登録";
+    });
+    sightMapObj.invalidateSize();
+  },80);
+}
+function setSightTime(v,b){
+  sightWhen=v;
+  const dateEl=document.getElementById("sightDate");
+  if(dateEl) dateEl.classList.add("hidden");
+  document.querySelectorAll(".sightTimeBtn").forEach(x=>x.classList.remove("sight-time-selected"));
+  if(b) b.classList.add("sight-time-selected");
+  const ok=document.getElementById("sightTimeOK");
+  if(ok){ok.textContent="✅ 「"+v+"」を選択しました";ok.classList.remove("hidden");}
+  const note=document.getElementById("sightNote");
+  if(note) setTimeout(()=>note.scrollIntoView({behavior:"smooth",block:"center"}),180);
+}
+function showSightDate(b){
+  sightWhen="日時指定";
+  document.querySelectorAll(".sightTimeBtn").forEach(x=>x.classList.remove("sight-time-selected"));
+  if(b) b.classList.add("sight-time-selected");
+  const e=document.getElementById("sightDate");
+  e.classList.remove("hidden");
+  if(!e.value){
+    const d=new Date(),pad=n=>String(n).padStart(2,"0");
+    e.value=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+"T"+pad(d.getHours())+":"+pad(d.getMinutes());
+  }
+  const ok=document.getElementById("sightTimeOK");
+  if(ok){ok.textContent="✅ 日時を選んでください";ok.classList.remove("hidden");}
+  setTimeout(()=>e.scrollIntoView({behavior:"smooth",block:"center"}),120);
+}
+function closeSight(){document.getElementById("sightReport").classList.add("hidden")}
+async function submitSight(){
+  if(sightLat===null){alert("地図で見かけた「この辺」をタップしてください。");return}
+  let w=sightWhen;
+  if(w==="日時指定")w=document.getElementById("sightDate").value;
+  if(!w){alert("見かけた時間を選んでください。");return}
+  const data={targetId:Number(document.getElementById("sightTargetId").value),lat:sightLat,lng:sightLng,when:w,note:document.getElementById("sightNote").value.trim()};
+  try{
+    await apiJson("/api/sightings",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});
+    closeSight();
+    alert("見かけ情報を送信しました。ありがとうございます。");
+  }catch(err){
+    alert("送信できませんでした。少し時間を置いてもう一度お試しください。\n"+err.message);
+  }
+}
+
+</script><script>
+let selectedPetStatus = "";
+
+let posts=[], pickMap,marker,allMap,colors=[];
+async function loadPostsFromServer(){
+  try{
+    const data=await apiJson("/api/posts");
+    posts=Array.isArray(data)?data:[];
+  }catch(err){
+    posts=[];
+    console.error(err);
+    const el=document.getElementById("list");
+    if(el)el.innerHTML='<div class="empty">投稿を読み込めませんでした。少し時間を置いて再読み込みしてください。</div>';
+  }
+  render();
+}
+function changeStatusHere(){
+  const box=document.getElementById("inlineStatusChanger");
+  if(box) box.classList.toggle("hidden");
+}
+function closeStatusChanger(){
+  const box=document.getElementById("inlineStatusChanger");
+  if(box) box.classList.add("hidden");
+}
+function begin(s,jump=true){
+selectedPetStatus=s;
+const statusEl=document.getElementById("status");
+if(statusEl) statusEl.value=s;
+title.textContent="🐾 "+s;formBox.classList.remove("hidden");
+document.querySelectorAll("#statusChoices .choice").forEach(b=>b.classList.toggle("on",b.textContent.includes(s)));
+let cs=document.getElementById("compactStatusText");
+if(cs) cs.textContent=(s==="探しています"?"🔴 ":s==="見かけました"?"👀 ":"🏠 ")+s+"（選択済み）";
+let q=document.getElementById("whereQuestion"), p=document.getElementById("place");
+if(s==="探しています"){q.textContent="どの辺でいなくなりましたか？";p.placeholder="例：城南町○○公園の近く"}
+else if(s==="見かけました"){q.textContent="どの辺で見かけましたか？";p.placeholder="例：○○交差点の近く"}
+else {q.textContent="どの辺で保護しましたか？";p.placeholder="例：○○公園の近く"}
+setTimeout(()=>{initPick();if(jump)formBox.scrollIntoView({behavior:"smooth"})},50)}
+document.querySelectorAll(".choices").forEach(g=>g.addEventListener("click",e=>{let b=e.target.closest(".choice");if(!b)return; if(g.classList.contains("multi")){b.classList.toggle("on");colors=[...g.querySelectorAll(".on")].map(x=>x.textContent.trim())}else{g.querySelectorAll(".choice").forEach(x=>x.classList.remove("on"));b.classList.add("on");document.getElementById(g.dataset.target).value=b.textContent.replace(/🐶|🐱/g,"").trim()}}));
+function initPick(){if(pickMap){pickMap.invalidateSize();return}pickMap=L.map("map").setView([32.8031,130.7079],9);L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"© OpenStreetMap"}).addTo(pickMap);pickMap.on("click",e=>setPoint(e.latlng.lat,e.latlng.lng))}
+function setPoint(a,b){lat.value=a;lng.value=b;if(marker)marker.setLatLng([a,b]);else marker=L.marker([a,b]).addTo(pickMap);pickMap.setView([a,b],14)}
+function useLocation(){navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>setPoint(p.coords.latitude,p.coords.longitude),()=>alert("現在地を取得できませんでした。地図をタップしてください。")):alert("この端末では現在地を取得できません。")}
+form.addEventListener("submit",async e=>{
+  e.preventDefault();
+  if(!selectedPetStatus){
+    const statusEl=document.getElementById("status");
+    if(statusEl && statusEl.value) selectedPetStatus=statusEl.value;
+  }
+  if(!selectedPetStatus){
+    const changer=document.getElementById("inlineStatusChanger");
+    if(changer) changer.classList.remove("hidden");
+    alert("状況だけ選んでください。入力内容はそのまま残ります。");
+    return;
+  }
+  if(!animal.value){
+    let a=document.querySelector('[data-target="animal"]');
+    a.style.outline="3px solid #ef4444";a.scrollIntoView({behavior:"smooth",block:"center"});
+    setTimeout(()=>alert("🐶犬・🐱猫・その他 のどれかを選んでください。"),250);return;
+  }
+  if(!lat.value){
+    document.getElementById("map").style.outline="3px solid #ef4444";
+    document.getElementById("map").scrollIntoView({behavior:"smooth",block:"center"});
+    setTimeout(()=>alert("📍地図をタップして場所を選んでください。"),250);return;
+  }
+  const submitBtn=form.querySelector(".primary");
+  const oldText=submitBtn.textContent;
+  submitBtn.disabled=true;submitBtn.textContent="送信しています…";
+  try{
+    const token=makeOwnerCode();
+    const img=await compressPhoto(photo.files[0]);
+    const payload={
+      status:selectedPetStatus,animal:animal.value,breed:breed.value,colors:[...colors],
+      size:size.value,hair:hair.value,collar:collar.value,place:place.value.trim(),
+      note:note.value.trim(),lat:+lat.value,lng:+lng.value,img,editToken:token
+    };
+    const created=await apiJson("/api/posts",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+    editTokens[String(created.id)]=token;saveEditTokens();
+    posts.unshift(created);
+    form.reset();colors=[];selectedPetStatus="";
+    document.querySelectorAll(".choice.on").forEach(x=>x.classList.remove("on"));
+    formBox.classList.add("hidden");render();
+    showManagementCode(created.id,token,true);
+  }catch(err){
+    alert("投稿できませんでした。\n"+err.message);
+  }finally{
+    submitBtn.disabled=false;submitBtn.textContent=oldText;
+  }
+});
+function initAll(){allMap=L.map("allMap").setView([32.8031,130.7079],9);L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"© OpenStreetMap"}).addTo(allMap)}
+function render(){
+  if(!allMap)initAll();
+  allMap.eachLayer(x=>{if(x instanceof L.Marker)allMap.removeLayer(x)});
+  list.innerHTML=posts.length?"":'<div class="empty">まだ投稿はありません。</div>';
+  posts.forEach(p=>{
+    const icon=p.status==="探しています"?"🔴":p.status==="見かけました"?"🟠":"🟢";
+    const latN=Number(p.lat),lngN=Number(p.lng);
+    if(Number.isFinite(latN)&&Number.isFinite(lngN)){
+      L.marker([latN,lngN]).addTo(allMap).bindPopup(`${icon} ${escapeHtml(p.status)}<br>${escapeHtml(p.animal)} ${escapeHtml(p.place||"")}`);
+    }
+    const d=document.createElement("div");d.className="post";
+    const cs=Array.isArray(p.colors)?p.colors:[];
+    const img=safeImage(p.img);
+    const own=!!editTokens[String(p.id)];
+    d.innerHTML=`${own?`<div class="owner-label">👤 あなたの投稿</div><div class="owner-context-note">ℹ️ これは投稿者用の表示です。ほかの利用者には「この子かも？／情報を送る」ボタンが表示されます。</div>`:""}<span class="badge">${icon} ${escapeHtml(p.status)}${p.resolved?"　✅解決":""}</span>
+      <h3>${escapeHtml(p.animal)} ${escapeHtml(p.breed||"")}</h3>
+      <div>📍 ${escapeHtml(p.place||"この辺で登録")}</div>
+      ${cs.length?`<div>毛色：${cs.map(escapeHtml).join("・")}</div>`:""}
+      ${p.size?`<div>大きさ：${escapeHtml(p.size)}</div>`:""}
+      ${p.collar?`<div>首輪：${escapeHtml(p.collar)}</div>`:""}
+      ${p.note?`<p>${escapeHtml(p.note)}</p>`:""}
+      ${img?`<img src="${img}" alt="投稿写真">`:""}
+      ${p.resolved?"":(own
+        ? `<button class="inbox" onclick="openOwnerInbox(${Number(p.id)})">📨 届いたメッセージを見る</button><div class="btn-help">他の利用者からこの投稿へ届いた情報を確認し、そのまま返信できます。</div><button class="manage-code" onclick="showOwnerCode(${Number(p.id)})">🔑 管理コードを確認</button><div class="btn-help">管理コードは投稿者確認用です。メッセージ確認・返信や「飼い主の元へ戻りました」の操作に使います。</div>`
+        : `<button class="contact" onclick="openMessage(${Number(p.id)})">${p.status==="探しています"?"💬 この子を見た・似ている情報を送る":"💬 この子かも？ 投稿者に確認する"}</button><div class="btn-help">似た子を見た・心当たりがある方はこちら。内容は投稿カードには公開されず、投稿者へ送られます。</div>${p.status==="探しています"?`<button class="sighting-only" onclick="contact(${Number(p.id)})">👀 目撃した場所・時間だけ送る</button><div class="btn-help">文章でのやり取りを始めず、目撃した場所と時間だけ送ることもできます。</div>`:""}<button class="claim" onclick="claimPost(${Number(p.id)})">🔑 投稿者の方はこちら（管理コード）</button><div class="btn-help">この投稿を自分で登録した方だけが使います。管理コードで本人確認します。</div>`)}
+      ${own&&!p.resolved?`<button class="resolve" onclick="resolvePost(${Number(p.id)})">✅ 飼い主の元へ戻りました</button><div class="btn-help">無事に再会できたときだけ押してください。管理コードを再確認してから完了にします。</div>`:""}`;
+    list.appendChild(d);
+  });
+}
+function contact(id){
+  const p=posts.find(x=>String(x.id)===String(id));
+  if(!p)return;
+  openSightReport(p);
+}
+function resolvePost(id){
+  const p=posts.find(x=>String(x.id)===String(id));
+  if(!p)return;
+  if(!confirm("この投稿を「飼い主の元へ戻りました」にしますか？\n\n無事に再会できた場合だけ進んでください。次の画面で管理コードを確認します。"))return;
+  openOwnerAuthModal(id,"resolve");
+}
+loadPostsFromServer();
+
+let sightingMap=null,sightingMarker=null,sightingLat=null,sightingLng=null,sightingTime="";
+function initSightingMap(lat,lng){
+  let a=Number(lat),b=Number(lng);
+  if(!Number.isFinite(a)||!Number.isFinite(b)){a=32.7898;b=130.7417}
+  sightingLat=a;sightingLng=b;
+  if(sightingMap){sightingMap.remove();sightingMap=null}
+  sightingMap=L.map("sightingMap").setView([a,b],14);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(sightingMap);
+  sightingMarker=L.marker([a,b],{draggable:true}).addTo(sightingMap);
+  function setpt(x,y){sightingLat=x;sightingLng=y;sightingMarker.setLatLng([x,y])}
+  sightingMap.on("click",e=>setpt(e.latlng.lat,e.latlng.lng));
+  sightingMarker.on("dragend",e=>{let q=e.target.getLatLng();sightingLat=q.lat;sightingLng=q.lng});
+  setTimeout(()=>sightingMap.invalidateSize(),100);
+}
+function pickSightTime(v,btn){
+  sightingTime=v;
+  document.getElementById("sightingExactTime").classList.add("hidden");
+  document.querySelectorAll("#timeChoices .choice").forEach(x=>x.classList.remove("on"));
+  btn.classList.add("on");
+}
+function showExactSightTime(btn){
+  sightingTime="日時指定";
+  document.querySelectorAll("#timeChoices .choice").forEach(x=>x.classList.remove("on"));
+  btn.classList.add("on");
+  const el=document.getElementById("sightingExactTime");
+  el.classList.remove("hidden");
+  if(!el.value){
+    const d=new Date(),pad=n=>String(n).padStart(2,"0");
+    el.value=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+"T"+pad(d.getHours())+":"+pad(d.getMinutes());
+  }
+}
+async function sendSighting(){
+  if(sightingLat==null||sightingLng==null){alert("地図で「この辺」を選んでください。");return}
+  let when=sightingTime;
+  if(when==="日時指定") when=document.getElementById("sightingExactTime").value;
+  if(!when){alert("「今さっき・1時間以内・今日・日時を選ぶ」のどれかを押してください。");return}
+  const idx=Number(document.getElementById("sightingPostIndex").value);
+  const p=posts[idx];
+  const note=document.getElementById("sightingNote").value.trim();
+  if(!p){alert("対象の投稿を確認できませんでした。");return}
+  try{
+    await apiJson("/api/sightings",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({targetId:Number(p.id),lat:sightingLat,lng:sightingLng,when,note})});
+    alert("情報を送信しました。ありがとうございます。");
+    document.getElementById("sightingPanel").classList.add("hidden");
+    document.getElementById("sightingNote").value="";
+    sightingTime="";
+  }catch(err){alert("送信できませんでした。\n"+err.message)}
+}
+
+</script>
+<div id="ownerCodeModal" class="msg-overlay hidden">
+  <div class="msg-card">
+    <div class="msg-head"><div><h2 id="ownerCodeModalTitle">🔑 投稿の管理コード</h2><div id="ownerCodeIntro" style="color:#475569;font-weight:800;margin-top:4px">投稿できました。この管理コードを保存してください。</div></div><button type="button" class="msg-close" onclick="closeOwnerCodeModal()">×</button></div>
+    <div class="code-warn">⚠️ <b>この4文字は「投稿した本人」であることを確認するための管理コードです。</b><br>別のスマホ・ブラウザでも、投稿カードの「投稿者の方はこちら」から入力すると、<b>届いたメッセージの確認・返信</b>や<b>「飼い主の元へ戻りました」への変更</b>ができます。<br><b>必ず保存し、第三者には渡さないでください。</b> 5回連続で間違えると、その端末からは15分間ロックされます。紛失した場合は復元できません。</div>
+    <div id="ownerCodeValue" class="code-box">A7K9</div>
+    <button type="button" class="code-copy" onclick="copyOwnerCode()">📋 管理コードをコピー</button>
+    <button type="button" class="secondary" onclick="closeOwnerCodeModal()">保存しました</button>
+    <p style="color:#64748b;font-size:12px;line-height:1.6;margin-bottom:0">スクリーンショットでも保存しておくことをおすすめします。管理コード自体は投稿カードには公開されません。</p>
+  </div>
+</div>
+<div id="ownerAuthModal" class="msg-overlay hidden">
+  <div class="msg-card">
+    <div class="msg-head"><div><h2 id="ownerAuthTitle">🔑 投稿者の本人確認</h2><div id="ownerAuthIntro" style="color:#475569;font-weight:800;margin-top:4px">投稿時に発行された管理コードを入力してください。</div></div><button type="button" class="msg-close" onclick="closeOwnerAuthModal()">×</button></div>
+    <div class="msg-note">管理コードは現在の投稿では <b>英大文字・数字4文字</b>（例：A7K9）です。<br>🔒 5回連続で間違えると15分間ロックされ、その間は入力欄と確認ボタンを使えません。</div>
+    <div id="ownerLockBox" class="lock-box hidden"></div>
+    <div id="ownerAuthError" class="auth-error hidden"></div>
+    <label>管理コード</label><input id="ownerAuthInput" maxlength="19" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="例：A7K9" oninput="this.value=this.value.toUpperCase()">
+    <button type="button" id="ownerAuthSubmit" class="owner-auth-submit" onclick="submitOwnerAuth()">🔑 管理コードを確認</button>
+    <p style="color:#64748b;font-size:11px;line-height:1.6;margin-bottom:0">※過去のバージョンで作成した投稿は、旧形式の管理コードもそのまま利用できます。</p>
+  </div>
+</div>
+<div id="messageModal" class="msg-overlay hidden">
+  <div class="msg-card">
+    <div class="msg-head"><div><h2 id="messageTitle">💬 メッセージ</h2><div id="messageTarget" style="color:#475569;font-weight:800;margin-top:4px"></div></div><button type="button" class="msg-close" onclick="closeMessageModal()">×</button></div>
+    <div class="msg-note">🔒 <b>このやり取りは投稿カードには公開されません。</b><br>本名・電話番号・正確な自宅住所は、最初から書かないでください。まずはペットの特徴や見かけた状況を確認しましょう。<br><span style="color:#64748b">※同じ端末・ブラウザなら、あとから同じ投稿の「この子かも？」を押して続きが見られます。</span></div>
+    <div id="messageList" class="msg-list"></div>
+    <div class="msg-compose"><label>メッセージ</label><textarea id="messageText" maxlength="800" placeholder="例：今日18時ごろ、○○公園の近くで似た犬を見ました。赤い首輪でしたか？"></textarea><button type="button" id="messageSend" class="msg-send" onclick="sendMessage()">💬 メッセージを送る</button></div>
+  </div>
+</div>
+<div id="inboxModal" class="msg-overlay hidden">
+  <div class="msg-card">
+    <div class="msg-head"><div><h2>📨 届いたメッセージ</h2><div id="inboxTarget" style="color:#475569;font-weight:800;margin-top:4px"></div></div><button type="button" class="msg-close" onclick="closeInboxModal()">×</button></div>
+    <div class="msg-note">投稿者だけがこの一覧を確認できます。連絡した人の本名や電話番号は自動では表示されません。内容を確認して必要なことだけ返信してください。</div>
+    <div id="threadList"></div>
+  </div>
+</div>
+
+<div id="sightReport" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,.48);z-index:9999;overflow:auto;padding:18px">
+  <div style="max-width:680px;margin:30px auto;background:white;border-radius:24px;padding:20px">
+    <h2 style="margin-top:0">👀 この子を見た情報を送る</h2><p style="font-weight:800;color:#334155">3つだけで送れます：①地図をタップ → ②時間を選ぶ → ③送信</p>
+    <p style="color:#64748b">場所は正確な住所でなく、地図で「この辺」をタップするだけで大丈夫です。</p>
+    <input type="hidden" id="sightTargetId">
+
+    <h3>① どの辺で見かけましたか？</h3>
+    <div id="sightMap" style="height:280px;border-radius:18px;overflow:hidden"></div>
+    <p id="sightPlaceOK" style="font-weight:800;color:#166534">📍 地図をタップしてください</p>
+
+    <h3>② いつ見ましたか？</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button type="button" class="sightTimeBtn" onclick="setSightTime('今さっき',this)">⚡ 今さっき</button>
+      <button type="button" class="sightTimeBtn" onclick="setSightTime('1時間以内',this)">🕐 1時間以内</button>
+      <button type="button" class="sightTimeBtn" onclick="setSightTime('今日',this)">☀️ 今日</button>
+      <button type="button" class="sightTimeBtn" onclick="showSightDate(this)">📅 日時を選ぶ</button>
+    </div>
+    <div id="sightTimeOK" class="hidden">✅ 時間を選択しました</div>
+    <input id="sightDate" type="datetime-local" class="hidden" style="width:100%;box-sizing:border-box;margin-top:10px;padding:12px">
+
+    <h3>③ 様子 <span style="font-weight:700;color:#64748b">（入力しなくてもOK）</span></h3>
+    <textarea id="sightNote" placeholder="例：道路を東の方へ歩いていました" style="width:100%;box-sizing:border-box;min-height:80px;padding:12px"></textarea>
+
+    <p style="background:#fff7ed;border:1px solid #fdba74;border-radius:12px;padding:10px;color:#9a3412;font-weight:700">⚠️ この目撃情報は、実際に見た内容だけを送ってください。イタズラ・虚偽情報は禁止です。</p>
+    <button type="button" onclick="submitSight()" style="width:100%;margin-top:14px;padding:16px;border:0;border-radius:16px;background:#145c52;color:white;font-weight:900;font-size:17px">💬 この目撃情報を送る</button>
+    <button type="button" onclick="closeSight()" style="width:100%;margin-top:8px;padding:14px">キャンセル</button>
+  </div>
+</div>
+
+<script>
+// v2.3: 「この子を見た情報を送る」ボタンの確実な起動
+document.addEventListener("click", function(e){
+  const btn = e.target.closest("button");
+  if(!btn) return;
+  const txt = (btn.textContent || "").replace(/\s+/g,"");
+  if(!txt.includes("この子を見た情報を送る")) return;
+
+  e.preventDefault();
+  e.stopPropagation();
+
+  // Existing card buttons use contact(<id>); extract the id safely.
+  const oc = btn.getAttribute("onclick") || "";
+  const m = oc.match(/contact\((\d+)\)/);
+  let p = null;
+  if(m && typeof posts !== "undefined"){
+    p = posts.find(x => String(x.id) === String(m[1]));
+  }
+
+  // Fallback: if id extraction fails, use the nearest rendered post index.
+  if(!p && typeof posts !== "undefined" && posts.length){
+    const cards = Array.from(document.querySelectorAll("button")).filter(b =>
+      (b.textContent||"").replace(/\s+/g,"").includes("この子を見た情報を送る")
+    );
+    const idx = cards.indexOf(btn);
+    if(idx >= 0) p = posts[idx];
+  }
+
+  if(!p){
+    alert("この投稿の情報を開けませんでした。ページを再読み込みして、もう一度お試しください。");
+    return;
+  }
+  openSightReport(p);
+}, true);
+</script>
+</body></html>
