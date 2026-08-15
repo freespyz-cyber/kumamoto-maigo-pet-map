@@ -10,20 +10,64 @@ async function ensureModerationSchema(){
   await ddl(()=>sql`ALTER TABLE pet_posts ADD COLUMN IF NOT EXISTS moderation_updated_at TIMESTAMPTZ`);
 }
 
+async function ensureLifecycleSchema(){
+  const ddl=async(fn)=>{try{await fn()}catch(err){if(["42701","42P07","42710"].includes(err?.code))return;throw err}};
+  await ddl(()=>sql`ALTER TABLE pet_posts ADD COLUMN IF NOT EXISTS listing_expires_at TIMESTAMPTZ`);
+  await ddl(()=>sql`ALTER TABLE pet_posts ADD COLUMN IF NOT EXISTS withdrawn_at TIMESTAMPTZ`);
+  await ddl(()=>sql`ALTER TABLE pet_posts ADD COLUMN IF NOT EXISTS expired_at TIMESTAMPTZ`);
+
+  // 既存の「探しています」投稿にも、投稿日時から60日の掲載期限を設定する。
+  await sql`
+    UPDATE pet_posts
+    SET listing_expires_at = created_at + INTERVAL '60 days'
+    WHERE status='探しています' AND resolved=FALSE AND listing_expires_at IS NULL
+  `;
+  // 管理機能導入済みの取り下げ投稿に削除基準日が無い場合は、取り下げ更新日時を引き継ぐ。
+  await sql`
+    UPDATE pet_posts
+    SET withdrawn_at = COALESCE(moderation_updated_at, created_at, NOW())
+    WHERE moderation_state='withdrawn' AND withdrawn_at IS NULL
+  `;
+}
+
+async function expireDueSearchingPosts(){
+  await sql`
+    UPDATE pet_posts
+    SET moderation_state='expired',
+        moderation_note='掲載期間60日が経過',
+        moderation_updated_at=NOW(),
+        expired_at=COALESCE(expired_at,NOW())
+    WHERE moderation_state='public'
+      AND status='探しています'
+      AND resolved=FALSE
+      AND listing_expires_at IS NOT NULL
+      AND listing_expires_at <= NOW()
+  `;
+}
+
+function publicPost(r){
+  return {
+    ...mapPost(r),
+    listingExpiresAt:r.listing_expires_at||null
+  };
+}
+
 export default async function handler(req, res) {
   try {
     await ensureSchema();
     await ensureModerationSchema();
+    await ensureLifecycleSchema();
+    await expireDueSearchingPosts();
 
     if (req.method === "GET") {
       const rows = await sql`
-        SELECT id,status,animal,breed,colors,size,hair,collar,place,note,lat,lng,img,resolved,created_at
+        SELECT id,status,animal,breed,colors,size,hair,collar,place,note,lat,lng,img,resolved,created_at,listing_expires_at
         FROM pet_posts
         WHERE moderation_state='public'
         ORDER BY created_at DESC
         LIMIT 300
       `;
-      return res.status(200).json(rows.map(mapPost));
+      return res.status(200).json(rows.map(publicPost));
     }
 
     if (req.method === "POST") {
@@ -56,7 +100,7 @@ export default async function handler(req, res) {
 
       const rows = await sql`
         INSERT INTO pet_posts
-          (status,animal,breed,colors,size,hair,collar,place,note,lat,lng,img,resolved,edit_token_hash,moderation_state)
+          (status,animal,breed,colors,size,hair,collar,place,note,lat,lng,img,resolved,edit_token_hash,moderation_state,listing_expires_at)
         VALUES
           (
             ${status},
@@ -73,11 +117,12 @@ export default async function handler(req, res) {
             ${img},
             FALSE,
             ${hashToken(token)},
-            'public'
+            'public',
+            ${status === "探しています" ? new Date(Date.now()+60*24*60*60*1000).toISOString() : null}
           )
-        RETURNING id,status,animal,breed,colors,size,hair,collar,place,note,lat,lng,img,resolved,created_at
+        RETURNING id,status,animal,breed,colors,size,hair,collar,place,note,lat,lng,img,resolved,created_at,listing_expires_at
       `;
-      return res.status(201).json(mapPost(rows[0]));
+      return res.status(201).json(publicPost(rows[0]));
     }
 
     if (req.method === "PATCH") {
@@ -93,11 +138,32 @@ export default async function handler(req, res) {
         return res.status(e.status).json({error:e.error,retryAfter:e.retryAfter||0});
       }
 
+      if (b.action === "renew") {
+        const rows = await sql`
+          UPDATE pet_posts
+          SET moderation_state='public',
+              moderation_note='',
+              moderation_updated_at=NOW(),
+              listing_expires_at=NOW()+INTERVAL '60 days',
+              expired_at=NULL
+          WHERE id=${id}
+            AND status='探しています'
+            AND resolved=FALSE
+            AND moderation_state IN ('public','expired')
+          RETURNING id,listing_expires_at
+        `;
+        if(!rows.length) return res.status(409).json({error:"この投稿は「まだ探しています」の延長対象ではありません。"});
+        return res.status(200).json({ok:true,renewed:true,listingExpiresAt:rows[0].listing_expires_at});
+      }
+
       if (b.action === "withdraw") {
         const rows = await sql`
           UPDATE pet_posts
-          SET moderation_state='withdrawn', moderation_note='投稿者による取り下げ', moderation_updated_at=NOW()
-          WHERE id=${id} AND moderation_state='public'
+          SET moderation_state='withdrawn',
+              moderation_note='投稿者による取り下げ',
+              moderation_updated_at=NOW(),
+              withdrawn_at=NOW()
+          WHERE id=${id} AND moderation_state IN ('public','expired')
           RETURNING id
         `;
         if(!rows.length) return res.status(404).json({error:"投稿が見つからないか、すでに取り下げられています。"});
@@ -106,7 +172,9 @@ export default async function handler(req, res) {
 
       const rows = await sql`
         UPDATE pet_posts
-        SET resolved=${Boolean(b.resolved)}
+        SET resolved=${Boolean(b.resolved)},
+            listing_expires_at=CASE WHEN ${Boolean(b.resolved)} THEN NULL ELSE listing_expires_at END,
+            expired_at=CASE WHEN ${Boolean(b.resolved)} THEN NULL ELSE expired_at END
         WHERE id=${id} AND moderation_state='public'
         RETURNING id
       `;

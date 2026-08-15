@@ -1,4 +1,4 @@
-<!doctype html><html lang="ja"><head><!-- production-release: 2026-08-15-v2 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<!doctype html><html lang="ja"><head><!-- production-release: 2026-08-15-v3-sixty-day --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>熊本 迷子犬・迷子猫MAP｜迷子ペットの捜索・目撃・保護情報</title>
 <meta name="description" content="熊本県で迷子になった犬・猫を探している方、見かけた方、保護した方を、地図とサイト内メッセージでつなぐ迷子ペット情報MAPです。迷子犬・迷子猫の捜索、目撃、保護情報を共有できます。">
 <meta name="robots" content="index,follow,max-image-preview:large">
@@ -169,6 +169,7 @@ footer{padding-bottom:105px}
 
 .admin-entry{margin-top:10px;border:1px solid #cbd5e1;background:#f8fafc;color:#334155;border-radius:12px;padding:9px 12px;font-weight:900;font-size:13px;cursor:pointer}
 .withdraw{background:#fff7ed!important;color:#9a3412!important;border:1px solid #fdba74!important}
+.renew{width:100%;border-radius:13px;padding:12px 11px;font-size:16px;font-weight:900;margin-top:8px;border:1px solid #93c5fd;background:#eff6ff;color:#1d4ed8}.expiry-note{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;border-radius:11px;padding:8px 10px;margin:7px 0;font-size:13px;font-weight:850}.admin-state.expired{background:#f1f5f9;color:#475569}
 .admin-card{max-width:760px}.admin-login-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}.admin-login-row button{border:0;border-radius:12px;padding:12px 16px;background:#0f172a;color:#fff;font-weight:900}.admin-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.admin-toolbar button{border:1px solid #cbd5e1;background:#fff;border-radius:10px;padding:8px 11px;font-weight:900}.admin-post{border:1px solid #e2e8f0;border-radius:14px;padding:12px;margin:10px 0;background:#fff}.admin-post-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.admin-state{display:inline-block;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:950;background:#eef2ff;color:#3730a3}.admin-state.hidden{background:#fef2f2;color:#991b1b}.admin-state.withdrawn{background:#fff7ed;color:#9a3412}.admin-meta{color:#64748b;font-size:13px;line-height:1.6;margin-top:6px}.admin-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.admin-actions button{border:0;border-radius:10px;padding:8px 10px;font-weight:900}.admin-hide{background:#fff7ed;color:#9a3412}.admin-restore{background:#ecfdf5;color:#166534}.admin-delete{background:#991b1b;color:#fff}.admin-error{background:#fef2f2;border:1px solid #fca5a5;color:#991b1b;border-radius:12px;padding:10px;margin:10px 0}.admin-ok{background:#ecfdf5;border:1px solid #86efac;color:#166534;border-radius:12px;padding:10px;margin:10px 0}
 
 </style></head><body>
@@ -260,7 +261,7 @@ footer{padding-bottom:105px}
 </section>
 <div class="compact-info">
   <details class="notice"><summary>⚠️ 投稿前の大切なお願い　›</summary><div class="notice-body"><p class="notice-strong">イタズラ・事実と異なる投稿はしないでください。</p><p>実際に分かる範囲だけを投稿してください。間違った情報は発見を遅らせる可能性があります。</p><p>※警察・自治体などの公式サイトではありません。</p></div></details>
-  <details class="quick-guide"><summary>💡 投稿方法・管理コードについて　›</summary><div class="quick-guide-body">① 状況を選ぶ　② 犬・猫と特徴を選ぶ　③ 地図でだいたいの場所を選ぶ　④ 写真があれば追加して投稿<br><b>投稿後の4文字の管理コードは保存してください。</b></div></details>
+  <details class="quick-guide"><summary>💡 投稿方法・管理コードについて　›</summary><div class="quick-guide-body">① 状況を選ぶ　② 犬・猫と特徴を選ぶ　③ 地図でだいたいの場所を選ぶ　④ 写真があれば追加して投稿<br><b>投稿後の4文字の管理コードは保存してください。</b><br>「探しています」は60日掲載。まだ探している場合は投稿者本人が60日延長できます。</div></details>
 </div>
 </main>
 
@@ -274,7 +275,7 @@ footer{padding-bottom:105px}
       <p style="color:#64748b;font-size:.9rem">※警察・消防・自治体等が運営する公式サイトではありません。</p>
     </div>
   </details>
-  <div class="support-lite"><strong>☕ 運営支援について</strong><br>現在は寄付・支援金の受付を行っていません。将来、維持費のための仕組みを用意する場合も、寄付の有無で利用機能が変わることはありません。<br><button type="button" class="admin-entry" onclick="openAdminModal()">🔐 運営者管理</button></div>
+  <div class="support-lite"><strong>☕ 運営支援について</strong><br>現在は寄付・支援金の受付を行っていません。将来、維持費のための仕組みを用意する場合も、寄付の有無で利用機能が変わることはありません。<br><button type="button" class="admin-entry" onclick="openExpiredRenewModal()">🔄 期限切れ投稿を再掲載</button> <button type="button" class="admin-entry" onclick="openAdminModal()">🔐 運営者管理</button></div>
 </section>
 
 <div id="postChooser" class="post-chooser hidden" role="dialog" aria-modal="true" aria-label="投稿する情報を選ぶ">
@@ -439,6 +440,7 @@ function closeOwnerCodeModal(){document.getElementById("ownerCodeModal").classLi
 function showManagementCode(id,code,isNew=false){
   const normalized=normalizeOwnerCode(code)||String(code||"");
   document.getElementById("ownerCodeValue").textContent=normalized;
+  const idBox=document.getElementById("ownerCodePostId");if(idBox)idBox.textContent=`投稿番号 #${Number(id)}`;
   document.getElementById("ownerCodeModalTitle").textContent=isNew?"🔑 投稿の管理コード":"🔑 管理コード";
   document.getElementById("ownerCodeIntro").textContent=isNew?"投稿できました。この管理コードを保存してください。":"この投稿の管理コードです。";
   document.getElementById("ownerCodeModal").classList.remove("hidden");
@@ -502,10 +504,10 @@ async function openOwnerAuthModal(id,action="claim"){
   const p=posts.find(x=>String(x.id)===String(id));if(!p)return;
   ownerAuthState.id=Number(id);ownerAuthState.action=action;
   const modal=document.getElementById("ownerAuthModal"),input=document.getElementById("ownerAuthInput"),btn=document.getElementById("ownerAuthSubmit"),err=document.getElementById("ownerAuthError");
-  const isResolve=action==="resolve",isWithdraw=action==="withdraw";
-  document.getElementById("ownerAuthTitle").textContent=isResolve?"🔑 解決済みにする前の本人確認":isWithdraw?"🔑 投稿を取り下げる前の本人確認":"🔑 投稿者の本人確認";
-  document.getElementById("ownerAuthIntro").textContent=isResolve?"この投稿の管理コードを入力してください。確認できた場合だけ「飼い主の元へ戻りました」に変更します。":isWithdraw?"取り下げる投稿の管理コードを入力してください。取り下げ後は一般の一覧・地図から非表示になります。":"この投稿を管理する方は、投稿時に発行された管理コードを入力してください。";
-  btn.textContent=isResolve?"✅ 管理コードを確認して解決済みにする":isWithdraw?"🗂️ 管理コードを確認して取り下げる":"🔑 管理コードを確認";
+  const isResolve=action==="resolve",isWithdraw=action==="withdraw",isRenew=action==="renew";
+  document.getElementById("ownerAuthTitle").textContent=isResolve?"🔑 解決済みにする前の本人確認":isWithdraw?"🔑 投稿を取り下げる前の本人確認":isRenew?"🔑 60日延長する前の本人確認":"🔑 投稿者の本人確認";
+  document.getElementById("ownerAuthIntro").textContent=isResolve?"この投稿の管理コードを入力してください。確認できた場合だけ「飼い主の元へ戻りました」に変更します。":isWithdraw?"取り下げる投稿の管理コードを入力してください。取り下げ後は一般の一覧・地図から非表示になります。":isRenew?"まだ探している場合は、管理コードを確認後、この日から掲載期間を60日に更新します。":"この投稿を管理する方は、投稿時に発行された管理コードを入力してください。";
+  btn.textContent=isResolve?"✅ 管理コードを確認して解決済みにする":isWithdraw?"🗂️ 管理コードを確認して取り下げる":isRenew?"🔄 管理コードを確認して60日延長":"🔑 管理コードを確認";
   input.value="";err.classList.add("hidden");err.textContent="";clearOwnerAuthLockUI();modal.classList.remove("hidden");
   const st=await checkOwnerLockStatus(id);
   if(st.locked){setOwnerAuthLocked(st.retryAfter||900)}else{setTimeout(()=>input.focus(),80)}
@@ -527,7 +529,12 @@ async function submitOwnerAuth(){
       await apiJson("/api/posts",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:Number(id),action:"withdraw",editToken:code})});
       posts=posts.filter(x=>String(x.id)!==String(id));
       delete editTokens[String(id)];saveEditTokens();closeOwnerAuthModal();render();
-      alert("🗂️ 投稿を取り下げました。一般の一覧・地図には表示されません。");
+      alert("🗂️ 投稿を取り下げました。一般の一覧・地図には表示されません。取り下げデータは60日後に自動削除されます。");
+    }else if(action==="renew"){
+      const data=await apiJson("/api/posts",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:Number(id),action:"renew",editToken:code})});
+      const p=posts.find(x=>String(x.id)===String(id));if(p)p.listingExpiresAt=data.listingExpiresAt||null;
+      editTokens[String(id)]=code;saveEditTokens();closeOwnerAuthModal();render();
+      alert("🔄 『まだ探しています』を確認しました。今日から掲載期間を60日に更新しました。");
     }else{
       await apiJson(`/api/messages?view=owner-inbox&targetId=${encodeURIComponent(id)}`,{headers:{"x-owner-code":code}});
       editTokens[String(id)]=code;saveEditTokens();closeOwnerAuthModal();render();
@@ -541,7 +548,16 @@ async function submitOwnerAuth(){
   }
 }
 function claimPost(id){openOwnerAuthModal(id,"claim")}
-
+function daysUntil(v){
+  if(!v)return null;
+  const t=new Date(v).getTime();if(!Number.isFinite(t))return null;
+  return Math.max(0,Math.ceil((t-Date.now())/86400000));
+}
+function renewPost(id){
+  const p=posts.find(x=>String(x.id)===String(id));if(!p||p.status!=="探しています"||p.resolved)return;
+  if(!confirm("まだ探していますか？\n\n管理コードを確認後、今日から掲載期間を60日に更新します。"))return;
+  openOwnerAuthModal(id,"renew");
+}
 
 function previewSelectedPhoto(input){
   const file=input&&input.files&&input.files[0];
@@ -838,10 +854,12 @@ function render(){
       <div class="post-location">📍 ${escapeHtml(p.place||"この辺で登録")}</div>
       ${features.length?`<div class="feature-row">${features.join("")}</div>`:""}
       ${p.note?`<div class="post-note">${escapeHtml(p.note)}</div>`:""}
+      ${own&&p.status==="探しています"&&!p.resolved&&daysUntil(p.listingExpiresAt)!==null?`<div class="expiry-note">📅 掲載期限まであと ${daysUntil(p.listingExpiresAt)}日</div>`:""}
       <div class="post-actions">
       ${p.resolved?"":(own
         ? `<button class="inbox" onclick="openOwnerInbox(${Number(p.id)})">📨 届いたメッセージを見る</button><button class="manage-code" onclick="showOwnerCode(${Number(p.id)})">🔑 管理コードを確認</button>`
         : `<button class="contact" onclick="openMessage(${Number(p.id)})">${p.status==="探しています"?"💬 この子を見た・似ている情報を送る":"💬 この子かも？ 投稿者に確認する"}</button>${p.status==="探しています"?`<button class="sighting-only" onclick="contact(${Number(p.id)})">👀 場所・時間だけ送る</button>`:""}<button class="claim" onclick="claimPost(${Number(p.id)})">🔑 投稿者の方はこちら</button>`)}
+      ${own&&p.status==="探しています"&&!p.resolved?`<button class="renew" onclick="renewPost(${Number(p.id)})">🔄 まだ探しています（60日延長）</button>`:""}
       ${own&&!p.resolved?`<button class="resolve" onclick="resolvePost(${Number(p.id)})">✅ 飼い主の元へ戻りました</button>`:""}
       ${own?`<button class="withdraw" onclick="withdrawPost(${Number(p.id)})">🗂️ 投稿を取り下げる</button>`:""}
       </div></div>`;
@@ -921,6 +939,33 @@ async function sendSighting(){
 }
 
 
+function openExpiredRenewModal(){
+  const m=document.getElementById("expiredRenewModal");if(!m)return;
+  document.getElementById("expiredRenewError").classList.add("hidden");
+  document.getElementById("expiredRenewError").textContent="";
+  m.classList.remove("hidden");
+  setTimeout(()=>document.getElementById("expiredRenewPostId")?.focus(),80);
+}
+function closeExpiredRenewModal(){document.getElementById("expiredRenewModal")?.classList.add("hidden")}
+async function submitExpiredRenew(){
+  const id=Number(document.getElementById("expiredRenewPostId").value);
+  const code=normalizeOwnerCode(document.getElementById("expiredRenewCode").value);
+  const err=document.getElementById("expiredRenewError"),btn=document.getElementById("expiredRenewSubmit");
+  if(!Number.isInteger(id)||id<=0){err.textContent="投稿番号を入力してください。";err.classList.remove("hidden");return}
+  if(!code){err.textContent="4文字の管理コードを入力してください。";err.classList.remove("hidden");return}
+  btn.disabled=true;err.classList.add("hidden");
+  try{
+    await apiJson("/api/posts",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id,action:"renew",editToken:code})});
+    editTokens[String(id)]=code;saveEditTokens();
+    closeExpiredRenewModal();
+    await loadPostsFromServer();
+    alert("🔄 投稿を再掲載しました。今日から新たに60日掲載されます。");
+  }catch(ex){
+    if(ex.status===429){err.textContent="管理コードの確認が一時ロックされています。時間をおいて再度お試しください。";}else{err.textContent=ex.message||"再掲載できませんでした。";}
+    err.classList.remove("hidden");
+  }finally{btn.disabled=false}
+}
+
 let adminSecret="";
 function openAdminModal(){
   const m=document.getElementById("adminModal");
@@ -943,18 +988,22 @@ async function adminCall(action,id=null,note=""){
   const r=await apiJson("/api/admin",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:adminSecret,action,id,note})});
   return r;
 }
-function adminStateLabel(s){return s==="hidden"?"非公開":s==="withdrawn"?"投稿者が取り下げ":"公開中"}
+function adminStateLabel(s){return s==="hidden"?"非公開":s==="withdrawn"?"投稿者が取り下げ":s==="expired"?"期限切れ保管":"公開中"}
 function renderAdminPosts(rows){
   const box=document.getElementById("adminList");
   if(!Array.isArray(rows)||!rows.length){box.innerHTML='<div class="empty">投稿はありません。</div>';return}
   box.innerHTML=rows.map(p=>{
     const state=String(p.moderationState||"public");
-    const stClass=state==="hidden"?"hidden":state==="withdrawn"?"withdrawn":"";
+    const stClass=state==="hidden"?"hidden":state==="withdrawn"?"withdrawn":state==="expired"?"expired":"";
     const note=p.note?`<div class="admin-meta">${escapeHtml(p.note)}</div>`:"";
+    let life="";
+    if(state==="public"&&p.status==="探しています"&&!p.resolved&&daysUntil(p.listingExpiresAt)!==null)life=`<div class="admin-meta">📅 掲載期限まであと ${daysUntil(p.listingExpiresAt)}日</div>`;
+    if(state==="withdrawn"&&p.withdrawnAt){const d=Math.max(0,60-Math.floor((Date.now()-new Date(p.withdrawnAt).getTime())/86400000));life=`<div class="admin-meta">🗑️ 自動削除まであと約 ${d}日</div>`;}
+    if(state==="expired")life=`<div class="admin-meta">⏸️ 掲載60日経過・保管中（復元すると新たに60日）</div>`;
     const actions=state==="public"
       ? `<button class="admin-hide" onclick="adminModerate('hide',${Number(p.id)})">🙈 非公開</button>`
       : `<button class="admin-restore" onclick="adminModerate('restore',${Number(p.id)})">↩️ 復元</button><button class="admin-delete" onclick="adminModerate('delete',${Number(p.id)})">🗑️ 完全削除</button>`;
-    return `<div class="admin-post"><div class="admin-post-head"><div><b>#${Number(p.id)}　${escapeHtml(p.animal||"")} ${escapeHtml(p.breed||"")}</b><div class="admin-meta">${escapeHtml(p.status||"")} ／ 📍 ${escapeHtml(p.place||"場所未記入")} ${p.resolved?"／ ✅ 解決済み":""}</div></div><span class="admin-state ${stClass}">${adminStateLabel(state)}</span></div>${note}<div class="admin-actions">${actions}</div></div>`;
+    return `<div class="admin-post"><div class="admin-post-head"><div><b>#${Number(p.id)}　${escapeHtml(p.animal||"")} ${escapeHtml(p.breed||"")}</b><div class="admin-meta">${escapeHtml(p.status||"")} ／ 📍 ${escapeHtml(p.place||"場所未記入")} ${p.resolved?"／ ✅ 解決済み":""}</div></div><span class="admin-state ${stClass}">${adminStateLabel(state)}</span></div>${life}${note}<div class="admin-actions">${actions}</div></div>`;
   }).join("");
 }
 async function adminRefresh(){
@@ -963,7 +1012,7 @@ async function adminRefresh(){
     document.getElementById("adminPasswordArea").classList.add("hidden");
     document.getElementById("adminPanel").classList.remove("hidden");
     const s=data.stats||{};
-    document.getElementById("adminStats").textContent=`公開 ${s.public||0}件 ／ 非公開 ${s.hidden||0}件 ／ 取り下げ ${s.withdrawn||0}件`;
+    document.getElementById("adminStats").textContent=`公開 ${s.public||0}件 ／ 非公開 ${s.hidden||0}件 ／ 取り下げ ${s.withdrawn||0}件 ／ 期限切れ ${s.expired||0}件`;
     renderAdminPosts(data.posts||[]);
     document.getElementById("adminError").classList.add("hidden");
   }catch(e){
@@ -987,6 +1036,16 @@ async function adminModerate(action,id){
 
 </script>
 
+<div id="expiredRenewModal" class="msg-overlay hidden">
+  <div class="msg-card">
+    <div class="msg-head"><div><h2>🔄 期限切れ投稿を再掲載</h2><div style="color:#475569;font-weight:800;margin-top:4px">まだ見つかっていない場合、投稿番号と管理コードで再掲載できます。</div></div><button type="button" class="msg-close" onclick="closeExpiredRenewModal()">×</button></div>
+    <div class="msg-note">再掲載すると、その日から新たに60日掲載されます。投稿番号と4文字の管理コードは、投稿時に表示された保存画面をご確認ください。</div>
+    <div id="expiredRenewError" class="admin-error hidden"></div>
+    <label>投稿番号</label><input id="expiredRenewPostId" inputmode="numeric" placeholder="例：7">
+    <label style="margin-top:10px">4文字の管理コード</label><input id="expiredRenewCode" maxlength="24" autocomplete="off" autocapitalize="characters" placeholder="例：A7K9">
+    <button id="expiredRenewSubmit" type="button" class="primary" onclick="submitExpiredRenew()" style="margin-top:12px">🔄 60日で再掲載する</button>
+  </div>
+</div>
 <div id="adminModal" class="msg-overlay hidden">
   <div class="msg-card admin-card">
     <div class="msg-head"><div><h2>🔐 運営者管理</h2><div style="color:#475569;font-weight:800;margin-top:4px">一般利用者にはできない非公開・復元・完全削除を行います。</div></div><button type="button" class="msg-close" onclick="closeAdminModal()">×</button></div>
@@ -1000,10 +1059,11 @@ async function adminModerate(action,id){
   <div class="msg-card">
     <div class="msg-head"><div><h2 id="ownerCodeModalTitle">🔑 投稿の管理コード</h2><div id="ownerCodeIntro" style="color:#475569;font-weight:800;margin-top:4px">投稿できました。この管理コードを保存してください。</div></div><button type="button" class="msg-close" onclick="closeOwnerCodeModal()">×</button></div>
     <div class="code-warn">⚠️ <b>この4文字は「投稿した本人」であることを確認するための管理コードです。</b><br>別のスマホ・ブラウザでも、投稿カードの「投稿者の方はこちら」から入力すると、<b>届いたメッセージの確認・返信</b>、<b>「飼い主の元へ戻りました」への変更</b>、<b>投稿の取り下げ</b>ができます。<br><b>必ず保存し、第三者には渡さないでください。</b> 5回連続で間違えると、その端末からは15分間ロックされます。紛失した場合は復元できません。</div>
+    <div id="ownerCodePostId" style="text-align:center;color:#475569;font-weight:900;margin:10px 0 4px">投稿番号 #---</div>
     <div id="ownerCodeValue" class="code-box">A7K9</div>
     <button type="button" class="code-copy" onclick="copyOwnerCode()">📋 管理コードをコピー</button>
     <button type="button" class="secondary" onclick="closeOwnerCodeModal()">保存しました</button>
-    <p style="color:#64748b;font-size:12px;line-height:1.6;margin-bottom:0">スクリーンショットでも保存しておくことをおすすめします。管理コード自体は投稿カードには公開されません。</p>
+    <p style="color:#64748b;font-size:12px;line-height:1.6;margin-bottom:0">スクリーンショットでも保存しておくことをおすすめします。<b>投稿番号と管理コードを一緒に保存してください。</b> 管理コード自体は投稿カードには公開されません。<br>「探しています」の投稿は60日掲載され、まだ見つかっていない場合は「まだ探しています」でその日から60日に更新できます。期限切れ後も投稿番号と管理コードで再掲載できます。</p>
   </div>
 </div>
 <div id="ownerAuthModal" class="msg-overlay hidden">

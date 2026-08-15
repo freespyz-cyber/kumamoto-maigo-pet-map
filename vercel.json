@@ -7,7 +7,8 @@
     { "src": "messages.js", "use": "@vercel/node" },
     { "src": "sightings.js", "use": "@vercel/node" },
     { "src": "health.js", "use": "@vercel/node" },
-    { "src": "admin.js", "use": "@vercel/node" }
+    { "src": "admin.js", "use": "@vercel/node" },
+    { "src": "maintenance.js", "use": "@vercel/node" }
   ],
   "routes": [
     { "src": "/api/posts", "dest": "/posts.js" },
@@ -15,7 +16,11 @@
     { "src": "/api/sightings", "dest": "/sightings.js" },
     { "src": "/api/health", "dest": "/health.js" },
     { "src": "/api/admin", "dest": "/admin.js" },
+    { "src": "/api/maintenance", "dest": "/maintenance.js" },
     { "src": "/", "dest": "/index.html" },
     { "src": "/(.*)", "dest": "/index.html" }
+  ],
+  "crons": [
+    { "path": "/api/maintenance", "schedule": "0 18 * * *" }
   ]
 }
