@@ -6,6 +6,9 @@ async function ensureAdminSchema(){
   await ddl(()=>sql`ALTER TABLE pet_posts ADD COLUMN IF NOT EXISTS moderation_state TEXT NOT NULL DEFAULT 'public'`);
   await ddl(()=>sql`ALTER TABLE pet_posts ADD COLUMN IF NOT EXISTS moderation_note TEXT NOT NULL DEFAULT ''`);
   await ddl(()=>sql`ALTER TABLE pet_posts ADD COLUMN IF NOT EXISTS moderation_updated_at TIMESTAMPTZ`);
+  await ddl(()=>sql`ALTER TABLE pet_posts ADD COLUMN IF NOT EXISTS listing_expires_at TIMESTAMPTZ`);
+  await ddl(()=>sql`ALTER TABLE pet_posts ADD COLUMN IF NOT EXISTS withdrawn_at TIMESTAMPTZ`);
+  await ddl(()=>sql`ALTER TABLE pet_posts ADD COLUMN IF NOT EXISTS expired_at TIMESTAMPTZ`);
   await ddl(()=>sql`
     CREATE TABLE IF NOT EXISTS pet_admin_log (
       id BIGSERIAL PRIMARY KEY,
@@ -23,6 +26,23 @@ async function ensureAdminSchema(){
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
   `);
+  await sql`
+    UPDATE pet_posts SET listing_expires_at=created_at+INTERVAL '60 days'
+    WHERE status='探しています' AND resolved=FALSE AND listing_expires_at IS NULL
+  `;
+  await sql`
+    UPDATE pet_posts SET withdrawn_at=COALESCE(moderation_updated_at,created_at,NOW())
+    WHERE moderation_state='withdrawn' AND withdrawn_at IS NULL
+  `;
+}
+
+async function expireDueSearchingPosts(){
+  await sql`
+    UPDATE pet_posts
+    SET moderation_state='expired',moderation_note='掲載期間60日が経過',moderation_updated_at=NOW(),expired_at=COALESCE(expired_at,NOW())
+    WHERE moderation_state='public' AND status='探しています' AND resolved=FALSE
+      AND listing_expires_at IS NOT NULL AND listing_expires_at<=NOW()
+  `;
 }
 
 function safeEqual(a,b){
@@ -112,6 +132,7 @@ export default async function handler(req,res){
     res.setHeader("Cache-Control","no-store");
     await ensureSchema();
     await ensureAdminSchema();
+    await expireDueSearchingPosts();
     if(req.method!=="POST"){
       res.setHeader("Allow","POST");
       return res.status(405).json({error:"Method not allowed"});
@@ -122,7 +143,8 @@ export default async function handler(req,res){
 
     if(action==="list"){
       const posts=await sql`
-        SELECT id,status,animal,breed,place,note,resolved,moderation_state,moderation_note,created_at
+        SELECT id,status,animal,breed,place,note,resolved,moderation_state,moderation_note,created_at,
+               listing_expires_at,withdrawn_at,expired_at
         FROM pet_posts
         ORDER BY created_at DESC
         LIMIT 300
@@ -132,11 +154,12 @@ export default async function handler(req,res){
         FROM pet_posts
         GROUP BY moderation_state
       `;
-      const stats={public:0,hidden:0,withdrawn:0};
+      const stats={public:0,hidden:0,withdrawn:0,expired:0};
       for(const r of counts){if(Object.prototype.hasOwnProperty.call(stats,r.moderation_state))stats[r.moderation_state]=Number(r.count)||0}
       return res.status(200).json({ok:true,stats,posts:posts.map(p=>({
         id:Number(p.id),status:p.status,animal:p.animal,breed:p.breed||"",place:p.place||"",note:p.note||"",resolved:!!p.resolved,
-        moderationState:p.moderation_state||"public",moderationNote:p.moderation_note||"",createdAt:p.created_at
+        moderationState:p.moderation_state||"public",moderationNote:p.moderation_note||"",createdAt:p.created_at,
+        listingExpiresAt:p.listing_expires_at||null,withdrawnAt:p.withdrawn_at||null,expiredAt:p.expired_at||null
       }))});
     }
 
@@ -155,12 +178,23 @@ export default async function handler(req,res){
 
     if(action==="restore"){
       const rows=await sql`
-        UPDATE pet_posts SET moderation_state='public',moderation_note='',moderation_updated_at=NOW()
-        WHERE id=${id} AND moderation_state IN ('hidden','withdrawn') RETURNING id
+        UPDATE pet_posts SET
+          moderation_state='public',
+          moderation_note='',
+          moderation_updated_at=NOW(),
+          withdrawn_at=NULL,
+          expired_at=NULL,
+          listing_expires_at=CASE
+            WHEN status='探しています' AND resolved=FALSE
+              AND (listing_expires_at IS NULL OR listing_expires_at<=NOW())
+            THEN NOW()+INTERVAL '60 days'
+            ELSE listing_expires_at
+          END
+        WHERE id=${id} AND moderation_state IN ('hidden','withdrawn','expired') RETURNING id,listing_expires_at
       `;
       if(!rows.length)return res.status(404).json({error:"復元できる投稿が見つかりませんでした。"});
       await sql`INSERT INTO pet_admin_log(action,target_id,note) VALUES('restore',${id},'管理者により復元')`;
-      return res.status(200).json({ok:true});
+      return res.status(200).json({ok:true,listingExpiresAt:rows[0].listing_expires_at||null});
     }
 
     if(action==="delete"){
