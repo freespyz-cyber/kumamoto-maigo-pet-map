@@ -3,14 +3,23 @@ import { sql, ensureSchema, hashToken, checkRateLimit, cleanText, roundCoord, ma
 const allowedStatus = new Set(["探しています","見かけました","保護しています"]);
 const allowedAnimal = new Set(["犬","猫","その他"]);
 
+async function ensureModerationSchema(){
+  const ddl=async(fn)=>{try{await fn()}catch(err){if(["42701","42P07","42710"].includes(err?.code))return;throw err}};
+  await ddl(()=>sql`ALTER TABLE pet_posts ADD COLUMN IF NOT EXISTS moderation_state TEXT NOT NULL DEFAULT 'public'`);
+  await ddl(()=>sql`ALTER TABLE pet_posts ADD COLUMN IF NOT EXISTS moderation_note TEXT NOT NULL DEFAULT ''`);
+  await ddl(()=>sql`ALTER TABLE pet_posts ADD COLUMN IF NOT EXISTS moderation_updated_at TIMESTAMPTZ`);
+}
+
 export default async function handler(req, res) {
   try {
     await ensureSchema();
+    await ensureModerationSchema();
 
     if (req.method === "GET") {
       const rows = await sql`
         SELECT id,status,animal,breed,colors,size,hair,collar,place,note,lat,lng,img,resolved,created_at
         FROM pet_posts
+        WHERE moderation_state='public'
         ORDER BY created_at DESC
         LIMIT 300
       `;
@@ -47,7 +56,7 @@ export default async function handler(req, res) {
 
       const rows = await sql`
         INSERT INTO pet_posts
-          (status,animal,breed,colors,size,hair,collar,place,note,lat,lng,img,resolved,edit_token_hash)
+          (status,animal,breed,colors,size,hair,collar,place,note,lat,lng,img,resolved,edit_token_hash,moderation_state)
         VALUES
           (
             ${status},
@@ -63,7 +72,8 @@ export default async function handler(req, res) {
             ${lng},
             ${img},
             FALSE,
-            ${hashToken(token)}
+            ${hashToken(token)},
+            'public'
           )
         RETURNING id,status,animal,breed,colors,size,hair,collar,place,note,lat,lng,img,resolved,created_at
       `;
@@ -82,12 +92,25 @@ export default async function handler(req, res) {
         const e = ownerAuthError(auth);
         return res.status(e.status).json({error:e.error,retryAfter:e.retryAfter||0});
       }
+
+      if (b.action === "withdraw") {
+        const rows = await sql`
+          UPDATE pet_posts
+          SET moderation_state='withdrawn', moderation_note='投稿者による取り下げ', moderation_updated_at=NOW()
+          WHERE id=${id} AND moderation_state='public'
+          RETURNING id
+        `;
+        if(!rows.length) return res.status(404).json({error:"投稿が見つからないか、すでに取り下げられています。"});
+        return res.status(200).json({ok:true,withdrawn:true});
+      }
+
       const rows = await sql`
         UPDATE pet_posts
         SET resolved=${Boolean(b.resolved)}
-        WHERE id=${id}
+        WHERE id=${id} AND moderation_state='public'
         RETURNING id
       `;
+      if(!rows.length) return res.status(404).json({error:"投稿が見つかりませんでした。"});
       return res.status(200).json({ok:true});
     }
 
