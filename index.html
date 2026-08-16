@@ -887,7 +887,16 @@ function withdrawPost(id){
 
 function openPostChooser(){document.getElementById("postChooser")?.classList.remove("hidden")}
 function closePostChooser(){document.getElementById("postChooser")?.classList.add("hidden")}
-loadPostsFromServer();
+(async()=>{
+  await loadPostsFromServer();
+
+  const params=new URLSearchParams(location.search);
+  const sightingId=Number(params.get("sighting"));
+
+  if(Number.isInteger(sightingId) && sightingId>0){
+    openSight(sightingId);
+  }
+})();
 
 let sightingMap=null,sightingMarker=null,sightingLat=null,sightingLng=null,sightingTime="";
 function initSightingMap(lat,lng){
