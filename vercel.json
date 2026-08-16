@@ -3,6 +3,7 @@
   "version": 2,
   "builds": [
     { "src": "index.html", "use": "@vercel/static" },
+    { "src": "poster.html", "use": "@vercel/static" },
     { "src": "posts.js", "use": "@vercel/node" },
     { "src": "messages.js", "use": "@vercel/node" },
     { "src": "sightings.js", "use": "@vercel/node" },
@@ -17,6 +18,7 @@
     { "src": "/api/health", "dest": "/health.js" },
     { "src": "/api/admin", "dest": "/admin.js" },
     { "src": "/api/maintenance", "dest": "/maintenance.js" },
+    { "src": "/poster.html", "dest": "/poster.html" },
     { "src": "/", "dest": "/index.html" },
     { "src": "/(.*)", "dest": "/index.html" }
   ],
