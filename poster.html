@@ -53,7 +53,7 @@ function clean(v){if(v==null)return"";if(Array.isArray(v))return v.filter(Boolea
 function animalLabel(v){const s=clean(v);if(s==="dog"||s==="犬")return"犬";if(s==="cat"||s==="猫")return"猫";if(s==="other"||s==="その他")return"その他";return s||""}
 function statusInfo(v){const s=clean(v);if(s==="lost"||s==="探しています")return{label:"探しています",headline:"この子を探しています",cls:"lost"};if(s==="seen"||s==="見かけました")return{label:"見かけました",headline:"この子を見かけました",cls:"seen"};if(s==="safe"||s==="保護しています"||s==="保護しました")return{label:"保護しています",headline:"この子を保護しています",cls:"safe"};return{label:"投稿情報",headline:"ペット情報",cls:"lost"}}
 function setDetail(id,field,value){const el=$(id),card=document.querySelector('[data-field="'+field+'"]'),s=clean(value);if(!s){if(card)card.hidden=true;return}el.textContent=s}
-function posterUrl(id){const u=new URL(location.href);u.search="";u.hash="";u.searchParams.set("id",id);return u.toString()}
+function posterUrl(id){const u=new URL("/",location.origin);u.searchParams.set("sighting",id);return u.toString()}
 function renderQR(text){const box=$("qr");box.innerHTML="";if(typeof QRCode==="undefined"){box.textContent="QRコードを読み込めませんでした";box.style.fontSize="12px";return}new QRCode(box,{text,width:360,height:360,correctLevel:QRCode.CorrectLevel.M})}
 async function load(){
  const id=new URLSearchParams(location.search).get("id");if(!id)throw new Error("投稿番号が指定されていません。");
