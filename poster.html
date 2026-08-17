@@ -38,6 +38,89 @@ body{background:#edf2f7;color:var(--ink);font-family:-apple-system,BlinkMacSyste
   .post-no{margin-top:1mm!important;padding:1.4mm!important;font-size:2.8mm!important}
   .footer{padding-top:1mm!important;gap:1mm!important}
   .privacy{font-size:2.5mm!important;line-height:1.3!important}
+}/* ===== 写真＋QR 新レイアウト ===== */
+.paper{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 55mm;
+  grid-template-areas:
+    "brand brand"
+    "hero hero"
+    "photo qr"
+    "summary summary"
+    "details details"
+    "note note"
+    "footer footer";
+  column-gap:4mm;
+  row-gap:3mm;
+}
+
+.brand{grid-area:brand}
+.hero{grid-area:hero}
+.photo-frame{grid-area:photo;height:120mm;min-height:120mm}
+.summary-row{grid-area:summary}
+.detail-grid{grid-area:details}
+
+.bottom-grid{display:contents}
+
+.note{
+  grid-area:note;
+  min-height:24mm;
+  padding:3mm;
+}
+
+.qr-panel{
+  grid-area:qr;
+  align-self:stretch;
+  justify-content:center;
+  padding:3mm;
+}
+
+.footer{grid-area:footer}
+
+@media print{
+  .photo-frame{
+    height:120mm!important;
+    min-height:120mm!important;
+  }
+
+  .photo-frame img{
+    max-width:100%!important;
+    max-height:100%!important;
+    width:auto!important;
+    height:auto!important;
+    object-fit:contain!important;
+  }
+
+  .detail{
+    min-height:14mm!important;
+    padding:2mm 2.4mm!important;
+  }
+
+  .detail-label{font-size:3mm!important}
+  .detail-value{font-size:4.8mm!important}
+
+  .note{
+    min-height:24mm!important;
+    padding:3mm!important;
+  }
+
+  .qr-panel{padding:3mm!important}
+
+  #qr{
+    width:38mm!important;
+    height:38mm!important;
+  }
+}
+
+@media(max-width:720px){
+  .paper{
+    display:flex;
+    flex-direction:column;
+  }
+
+  .bottom-grid{
+    display:grid;
+  }
 }
 </style>
 </head>
