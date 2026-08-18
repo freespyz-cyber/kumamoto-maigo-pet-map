@@ -122,6 +122,24 @@ body{background:#edf2f7;color:var(--ink);font-family:-apple-system,BlinkMacSyste
     display:grid;
   }
 }
+@media print {
+  .paper {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 55mm !important;
+    grid-template-areas:
+      "brand brand"
+      "hero hero"
+      "photo qr"
+      "summary summary"
+      "details details"
+      "note note"
+      "footer footer" !important;
+  }
+
+  .bottom-grid {
+    display: contents !important;
+  }
+}  
 </style>
 </head>
 <body>
