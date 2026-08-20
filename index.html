@@ -776,7 +776,7 @@ form.addEventListener("submit",async e=>{
     formBox.classList.add("hidden");render();
     showManagementCode(created.id,token,true);
   }catch(err){
-    alert("投稿できませんでした。\n"+err.message);
+    alert("投稿できませんでした。\n" + (typeof err.message === "string" ? err.message : JSON.stringify(err.message, null, 2)));
   }finally{
     submitBtn.disabled=false;submitBtn.textContent=oldText;
   }
@@ -887,7 +887,16 @@ function withdrawPost(id){
 
 function openPostChooser(){document.getElementById("postChooser")?.classList.remove("hidden")}
 function closePostChooser(){document.getElementById("postChooser")?.classList.add("hidden")}
-loadPostsFromServer();
+(async()=>{
+  await loadPostsFromServer();
+
+  const params=new URLSearchParams(location.search);
+  const sightingId=Number(params.get("sighting"));
+
+  if(Number.isInteger(sightingId) && sightingId>0){
+  contact(sightingId);
+  }
+})();
 
 let sightingMap=null,sightingMarker=null,sightingLat=null,sightingLng=null,sightingTime="";
 function initSightingMap(lat,lng){
