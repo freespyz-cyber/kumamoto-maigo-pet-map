@@ -60,13 +60,21 @@ export default async function handler(req, res) {
     await expireDueSearchingPosts();
 
     if (req.method === "GET") {
-      const rows = await sql`
-        SELECT id,status,animal,breed,colors,size,hair,collar,place,note,lat,lng,img,resolved,created_at,listing_expires_at
-        FROM pet_posts
-        WHERE moderation_state='public'
-        ORDER BY created_at DESC
-        LIMIT 300
-      `;
+      const requestedId = Number(req.query?.id);
+      const rows = Number.isInteger(requestedId) && requestedId > 0
+        ? await sql`
+            SELECT id,status,animal,breed,colors,size,hair,collar,place,note,lat,lng,img,resolved,created_at,listing_expires_at
+            FROM pet_posts
+            WHERE id=${requestedId} AND moderation_state='public'
+            LIMIT 1
+          `
+        : await sql`
+            SELECT id,status,animal,breed,colors,size,hair,collar,place,note,lat,lng,img,resolved,created_at,listing_expires_at
+            FROM pet_posts
+            WHERE moderation_state='public'
+            ORDER BY created_at DESC
+            LIMIT 300
+          `;
       return res.status(200).json(rows.map(publicPost));
     }
 
