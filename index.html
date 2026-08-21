@@ -753,6 +753,16 @@ document.querySelectorAll(".choices").forEach(g=>g.addEventListener("click",e=>{
 function initPick(){if(pickMap){pickMap.invalidateSize();return}pickMap=L.map("map").setView([32.8031,130.7079],9);L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"© OpenStreetMap"}).addTo(pickMap);pickMap.on("click",e=>setPoint(e.latlng.lat,e.latlng.lng))}
 function setPoint(a,b){lat.value=a;lng.value=b;if(marker)marker.setLatLng([a,b]);else marker=L.marker([a,b]).addTo(pickMap);pickMap.setView([a,b],14)}
 function useLocation(){navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>setPoint(p.coords.latitude,p.coords.longitude),()=>alert("現在地を取得できませんでした。地図をタップしてください。")):alert("この端末では現在地を取得できません。")}
+function checkPostSafety(){
+  const text=[document.getElementById("place")?.value||"",document.getElementById("note")?.value||""].join("\n");
+  const phone=/(0\\d{1,4}[-ー]\\d{1,4}[-ー]\\d{3,4}|\\d{10,11})/.test(text);
+  const address=/(〒?\\d{3}[-ー]\\d{4}|熊本県.{0,12}(市|区|町|村).{0,20}(番地|号|丁目)|自宅|住所)/.test(text);
+  if(phone||address){
+    alert("⚠️ 電話番号や自宅の正確な住所は公開しないでください。\n場所は地図で「この辺」を選び、特徴だけを書いてください。");
+    return false;
+  }
+  return true;
+}
 form.addEventListener("submit",async e=>{
   e.preventDefault();
   if(!selectedPetStatus){
@@ -770,6 +780,7 @@ form.addEventListener("submit",async e=>{
     a.style.outline="3px solid #ef4444";a.scrollIntoView({behavior:"smooth",block:"center"});
     setTimeout(()=>alert("🐶犬・🐱猫・その他 のどれかを選んでください。"),250);return;
   }
+  if(!checkPostSafety()) return;
   if(!lat.value){
     document.getElementById("map").style.outline="3px solid #ef4444";
     document.getElementById("map").scrollIntoView({behavior:"smooth",block:"center"});
