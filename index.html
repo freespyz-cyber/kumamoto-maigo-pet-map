@@ -177,6 +177,8 @@ footer{padding-bottom:105px}
 .flow-guide{background:#fff;border:1px solid #dbe4ee;border-radius:20px;padding:16px;margin-bottom:14px;box-shadow:0 8px 24px rgba(15,23,42,.05)}
 .flow-guide h2{font-size:21px;line-height:1.35;margin:0 0 4px}.flow-lead{margin:0 0 12px;color:#64748b;font-size:14px;font-weight:750}.flow-track{display:grid;gap:8px}.flow-card{display:grid;grid-template-columns:48px 1fr;gap:10px;align-items:center;border-radius:15px;padding:10px 11px}.flow-card .flow-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:rgba(255,255,255,.78);font-size:24px}.flow-card strong{display:block;font-size:16px;line-height:1.3}.flow-card span{display:block;font-size:13px;font-weight:700;margin-top:2px;color:#475569}.flow-arrow{text-align:center;color:#94a3b8;font-size:20px;font-weight:900;line-height:1}.flow-lost{background:#fff1f2}.flow-seen{background:#fff7ed}.flow-safe{background:#f0fdf4}.flow-contact{background:#eff6ff}.flow-return{background:#f5f3ff}
 @media(min-width:620px){.flow-track{grid-template-columns:repeat(5,1fr);align-items:stretch}.flow-arrow{display:grid;place-items:center}.flow-card{grid-template-columns:1fr;text-align:center}.flow-card .flow-icon{margin:auto}}
+
+.flow-chat{margin-top:10px;border:1px solid #bfdbfe;background:#f8fbff;border-radius:16px;padding:11px}.flow-chat-title{font-size:14px;font-weight:950;color:#1d4ed8;margin-bottom:8px}.flow-bubble{max-width:88%;padding:8px 10px;border-radius:13px;font-size:13px;font-weight:750;line-height:1.45;margin:6px 0}.flow-bubble-seen{background:#fff7ed;color:#9a3412}.flow-bubble-owner{background:#dbeafe;color:#1e40af;margin-left:auto}.flow-chat-note{font-size:12px;color:#475569;font-weight:800;margin-top:8px}
 </style></head><body>
 <header class="site-header" id="pageTop">
   <div class="site-header-inner">
@@ -273,7 +275,14 @@ footer{padding-bottom:105px}
 <div class="flow-arrow">↓</div>
 <div class="flow-card flow-seen"><div class="flow-icon">👀</div><div><strong>この子かも</strong><span>見た場所・時間を送る</span></div></div>
 <div class="flow-arrow">↓</div>
-<div class="flow-card flow-contact"><div class="flow-icon">💬</div><div><strong>投稿者が確認</strong><span>メッセージで相談</span></div></div>
+<div class="flow-card flow-contact"><div class="flow-icon">💬</div><div><strong>やり取りする</strong><span>質問と回答で特徴を確認</span></div></div>
+</div>
+<div class="flow-chat" aria-label="メッセージの例">
+<div class="flow-chat-title">💬 実際のやり取り</div>
+<div class="flow-bubble flow-bubble-seen">「今日18時ごろ、公園の近くで見ました」</div>
+<div class="flow-bubble flow-bubble-owner">「首輪の色と、向かった方向を教えてください」</div>
+<div class="flow-bubble flow-bubble-seen">「赤い首輪で、駅の方へ歩いていました」</div>
+<div class="flow-chat-note">📍 場所・時間・特徴を確認してから、安全に相談します</div>
 </div>
 <div class="flow-track" style="margin-top:8px">
 <div class="flow-card flow-safe"><div class="flow-icon">🟢</div><div><strong>保護しています</strong><span>保護した人が投稿</span></div></div>
