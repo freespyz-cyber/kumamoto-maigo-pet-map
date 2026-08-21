@@ -178,7 +178,7 @@ function posterUrl(id){const u=new URL("/","https://kumamotomaigopetmapv280clear
 function renderQR(text){const box=$("qr");box.innerHTML="";if(typeof QRCode==="undefined"){box.textContent="QRコードを読み込めませんでした";box.style.fontSize="12px";return}new QRCode(box,{text,width:360,height:360,correctLevel:QRCode.CorrectLevel.M})}
 async function load(){
  const id=new URLSearchParams(location.search).get("id");if(!id)throw new Error("投稿番号が指定されていません。");
- const res=await fetch("/api/posts",{headers:{"Accept":"application/json"}});if(!res.ok)throw new Error("投稿情報を取得できませんでした。");
+ const res=await fetch("/api/posts?id="+encodeURIComponent(id),{headers:{"Accept":"application/json"}});if(!res.ok)throw new Error("投稿情報を取得できませんでした。");
  const raw=await res.json();const posts=Array.isArray(raw)?raw:(Array.isArray(raw.posts)?raw.posts:[]);const p=posts.find(x=>String(x.id)===String(id));if(!p)throw new Error("この投稿は見つかりませんでした。非公開・取り下げ・期限切れ・削除済みの可能性があります。");
  const st=statusInfo(p.status);$("statusLabel").textContent=st.label;$("statusLabel").className="status-pill "+st.cls;$("mainHeadline").textContent=st.headline;$("mainHeadline").className="headline "+(st.cls==="lost"?"":st.cls);
  $("placeText").textContent=clean(p.place||p.location||p.address)||"熊本県内";const animal=animalLabel(p.animal),breed=clean(p.breed);$("petTitle").textContent=[animal,breed].filter(Boolean).join("・")||"迷子ペット";$("qrPetName").textContent="対象: "+($("petTitle").textContent||"この子");
