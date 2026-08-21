@@ -179,6 +179,8 @@ footer{padding-bottom:105px}
 @media(min-width:620px){.flow-track{grid-template-columns:repeat(5,1fr);align-items:stretch}.flow-arrow{display:grid;place-items:center}.flow-card{grid-template-columns:1fr;text-align:center}.flow-card .flow-icon{margin:auto}}
 
 .flow-chat{margin-top:10px;border:1px solid #bfdbfe;background:#f8fbff;border-radius:16px;padding:11px}.flow-chat-title{font-size:14px;font-weight:950;color:#1d4ed8;margin-bottom:8px}.flow-bubble{max-width:88%;padding:8px 10px;border-radius:13px;font-size:13px;font-weight:750;line-height:1.45;margin:6px 0}.flow-bubble-seen{background:#fff7ed;color:#9a3412}.flow-bubble-owner{background:#dbeafe;color:#1e40af;margin-left:auto}.flow-chat-note{font-size:12px;color:#475569;font-weight:800;margin-top:8px}
+
+.flow-guide-v2{background:#fff;border:1px solid #dbe4ee;border-radius:20px;padding:16px;margin-bottom:14px;box-shadow:0 8px 24px rgba(15,23,42,.05)}.flow-guide-v2 h2{font-size:21px;margin:0 0 4px}.flow-lead-v2{margin:0 0 12px;color:#64748b;font-size:14px;font-weight:750}.flow-section-v2{border-radius:16px;padding:12px;margin-top:10px}.flow-section-v2 h3{font-size:17px;margin:0 0 8px}.flow-persons{display:grid;gap:8px}.flow-person{background:#fff;border-radius:13px;padding:9px 10px;font-size:14px;font-weight:800}.flow-person strong{display:block;font-size:15px;margin-bottom:2px}.flow-person.seeker{border:2px solid #fda4af;color:#9f1239}.flow-person.owner{border:2px solid #93c5fd;color:#1e40af}.flow-person.both{border:2px solid #86efac;color:#166534}.flow-code{background:#f5f3ff;border:2px solid #c4b5fd;color:#5b21b6}.flow-qr{background:#eff6ff;border:2px solid #93c5fd;color:#1e40af}.flow-chat-v2{background:#f8fbff;border:1px solid #bfdbfe;border-radius:13px;padding:9px;margin-top:8px}.flow-chat-v2 div{padding:7px 9px;border-radius:11px;margin:5px 0;font-size:13px;font-weight:750}.flow-chat-v2 .from-seeker{background:#fff7ed;color:#9a3412;margin-right:12%}.flow-chat-v2 .from-owner{background:#dbeafe;color:#1e40af;margin-left:12%}@media(min-width:620px){.flow-persons{grid-template-columns:repeat(3,1fr)}}
 </style></head><body>
 <header class="site-header" id="pageTop">
   <div class="site-header-inner">
@@ -267,29 +269,25 @@ footer{padding-bottom:105px}
   <div id="list"></div>
 </section>
 <div class="compact-info">
-  <section class="flow-guide" aria-labelledby="flowGuideTitle">
-<h2 id="flowGuideTitle">🐾 迷子ペット情報の流れ</h2>
-<p class="flow-lead">あなたの立場に合う行動を選んでください。個人情報は最初から送らなくて大丈夫です。</p>
-<div class="flow-track">
-<div class="flow-card flow-lost"><div class="flow-icon">🔴</div><div><strong>探しています</strong><span>飼い主が投稿</span></div></div>
-<div class="flow-arrow">↓</div>
-<div class="flow-card flow-seen"><div class="flow-icon">👀</div><div><strong>この子かも</strong><span>見た場所・時間を送る</span></div></div>
-<div class="flow-arrow">↓</div>
-<div class="flow-card flow-contact"><div class="flow-icon">💬</div><div><strong>やり取りする</strong><span>質問と回答で特徴を確認</span></div></div>
+  <section class="flow-guide-v2" aria-labelledby="flowGuideTitle">
+<h2 id="flowGuideTitle">🐾 迷子ペットサイトの使い方</h2>
+<p class="flow-lead-v2">誰が・何をするかを、3つの場面に分けて説明します。</p>
+<div class="flow-section-v2" style="background:#f8fbff">
+<h3>① 見つけた人と飼い主がやり取りする</h3>
+<div class="flow-persons">
+<div class="flow-person seeker"><strong>👀 見つけた人</strong>「この子かも？」を押して、場所・時間を送る</div>
+<div class="flow-person owner"><strong>🔴 飼い主</strong>届いたメッセージを確認して質問する</div>
+<div class="flow-person both"><strong>💬 2人で確認</strong>特徴・首輪・向かった方向などを確認する</div>
 </div>
-<div class="flow-chat" aria-label="メッセージの例">
-<div class="flow-chat-title">💬 実際のやり取り</div>
-<div class="flow-bubble flow-bubble-seen">「今日18時ごろ、公園の近くで見ました」</div>
-<div class="flow-bubble flow-bubble-owner">「首輪の色と、向かった方向を教えてください」</div>
-<div class="flow-bubble flow-bubble-seen">「赤い首輪で、駅の方へ歩いていました」</div>
-<div class="flow-chat-note">📍 場所・時間・特徴を確認してから、安全に相談します</div>
+<div class="flow-chat-v2"><div class="from-seeker">👀「今日18時、公園の近くで見ました」</div><div class="from-owner">🔴「首輪の色と向かった方向を教えてください」</div><div class="from-seeker">👀「赤い首輪で、駅の方へ歩いていました」</div></div>
 </div>
-<div class="flow-track" style="margin-top:8px">
-<div class="flow-card flow-safe"><div class="flow-icon">🟢</div><div><strong>保護しています</strong><span>保護した人が投稿</span></div></div>
-<div class="flow-arrow">↔</div>
-<div class="flow-card flow-contact"><div class="flow-icon">📍</div><div><strong>場所・時間だけ送る</strong><span>似た子を見た人も協力</span></div></div>
-<div class="flow-arrow">→</div>
-<div class="flow-card flow-return"><div class="flow-icon">🤝</div><div><strong>再会へ</strong><span>安全に確認・相談</span></div></div>
+<div class="flow-section-v2 flow-code">
+<h3>② 投稿した飼い主が使うもの</h3>
+<div class="flow-person"><strong>🔑 4文字の管理コード</strong>投稿後に表示されます。保存すると、届いたメッセージの確認・返信や投稿の管理に使えます。</div>
+</div>
+<div class="flow-section-v2 flow-qr">
+<h3>③ ポスターを見た人が使うもの</h3>
+<div class="flow-person"><strong>📱 QRコード</strong>ポスターのQRコードを読み取ると、その子の目撃情報を送れます。場所・時間だけの送信もできます。</div>
 </div>
 </section>
 <details class="notice"><summary>⚠️ 投稿前の大切なお願い　›</summary><div class="notice-body"><p class="notice-strong">イタズラ・事実と異なる投稿はしないでください。</p><p>実際に分かる範囲だけを投稿してください。間違った情報は発見を遅らせる可能性があります。</p><p>※警察・自治体などの公式サイトではありません。</p></div></details>
