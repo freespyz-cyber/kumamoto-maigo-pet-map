@@ -172,6 +172,11 @@ footer{padding-bottom:105px}
 .renew{width:100%;border-radius:13px;padding:12px 11px;font-size:16px;font-weight:900;margin-top:8px;border:1px solid #93c5fd;background:#eff6ff;color:#1d4ed8}.expiry-note{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;border-radius:11px;padding:8px 10px;margin:7px 0;font-size:13px;font-weight:850}.admin-state.expired{background:#f1f5f9;color:#475569}
 .admin-card{max-width:760px}.admin-login-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}.admin-login-row button{border:0;border-radius:12px;padding:12px 16px;background:#0f172a;color:#fff;font-weight:900}.admin-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.admin-toolbar button{border:1px solid #cbd5e1;background:#fff;border-radius:10px;padding:8px 11px;font-weight:900}.admin-post{border:1px solid #e2e8f0;border-radius:14px;padding:12px;margin:10px 0;background:#fff}.admin-post-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.admin-state{display:inline-block;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:950;background:#eef2ff;color:#3730a3}.admin-state.hidden{background:#fef2f2;color:#991b1b}.admin-state.withdrawn{background:#fff7ed;color:#9a3412}.admin-meta{color:#64748b;font-size:13px;line-height:1.6;margin-top:6px}.admin-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.admin-actions button{border:0;border-radius:10px;padding:8px 10px;font-weight:900}.admin-hide{background:#fff7ed;color:#9a3412}.admin-restore{background:#ecfdf5;color:#166534}.admin-delete{background:#991b1b;color:#fff}.admin-error{background:#fef2f2;border:1px solid #fca5a5;color:#991b1b;border-radius:12px;padding:10px;margin:10px 0}.admin-ok{background:#ecfdf5;border:1px solid #86efac;color:#166534;border-radius:12px;padding:10px;margin:10px 0}
 
+
+/* 迷子情報の流れ：誰が何をするかを一目で案内 */
+.flow-guide{background:#fff;border:1px solid #dbe4ee;border-radius:20px;padding:16px;margin-bottom:14px;box-shadow:0 8px 24px rgba(15,23,42,.05)}
+.flow-guide h2{font-size:21px;line-height:1.35;margin:0 0 4px}.flow-lead{margin:0 0 12px;color:#64748b;font-size:14px;font-weight:750}.flow-track{display:grid;gap:8px}.flow-card{display:grid;grid-template-columns:48px 1fr;gap:10px;align-items:center;border-radius:15px;padding:10px 11px}.flow-card .flow-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:rgba(255,255,255,.78);font-size:24px}.flow-card strong{display:block;font-size:16px;line-height:1.3}.flow-card span{display:block;font-size:13px;font-weight:700;margin-top:2px;color:#475569}.flow-arrow{text-align:center;color:#94a3b8;font-size:20px;font-weight:900;line-height:1}.flow-lost{background:#fff1f2}.flow-seen{background:#fff7ed}.flow-safe{background:#f0fdf4}.flow-contact{background:#eff6ff}.flow-return{background:#f5f3ff}
+@media(min-width:620px){.flow-track{grid-template-columns:repeat(5,1fr);align-items:stretch}.flow-arrow{display:grid;place-items:center}.flow-card{grid-template-columns:1fr;text-align:center}.flow-card .flow-icon{margin:auto}}
 </style></head><body>
 <header class="site-header" id="pageTop">
   <div class="site-header-inner">
@@ -260,7 +265,25 @@ footer{padding-bottom:105px}
   <div id="list"></div>
 </section>
 <div class="compact-info">
-  <details class="notice"><summary>⚠️ 投稿前の大切なお願い　›</summary><div class="notice-body"><p class="notice-strong">イタズラ・事実と異なる投稿はしないでください。</p><p>実際に分かる範囲だけを投稿してください。間違った情報は発見を遅らせる可能性があります。</p><p>※警察・自治体などの公式サイトではありません。</p></div></details>
+  <section class="flow-guide" aria-labelledby="flowGuideTitle">
+<h2 id="flowGuideTitle">🐾 迷子ペット情報の流れ</h2>
+<p class="flow-lead">あなたの立場に合う行動を選んでください。個人情報は最初から送らなくて大丈夫です。</p>
+<div class="flow-track">
+<div class="flow-card flow-lost"><div class="flow-icon">🔴</div><div><strong>探しています</strong><span>飼い主が投稿</span></div></div>
+<div class="flow-arrow">↓</div>
+<div class="flow-card flow-seen"><div class="flow-icon">👀</div><div><strong>この子かも</strong><span>見た場所・時間を送る</span></div></div>
+<div class="flow-arrow">↓</div>
+<div class="flow-card flow-contact"><div class="flow-icon">💬</div><div><strong>投稿者が確認</strong><span>メッセージで相談</span></div></div>
+</div>
+<div class="flow-track" style="margin-top:8px">
+<div class="flow-card flow-safe"><div class="flow-icon">🟢</div><div><strong>保護しています</strong><span>保護した人が投稿</span></div></div>
+<div class="flow-arrow">↔</div>
+<div class="flow-card flow-contact"><div class="flow-icon">📍</div><div><strong>場所・時間だけ送る</strong><span>似た子を見た人も協力</span></div></div>
+<div class="flow-arrow">→</div>
+<div class="flow-card flow-return"><div class="flow-icon">🤝</div><div><strong>再会へ</strong><span>安全に確認・相談</span></div></div>
+</div>
+</section>
+<details class="notice"><summary>⚠️ 投稿前の大切なお願い　›</summary><div class="notice-body"><p class="notice-strong">イタズラ・事実と異なる投稿はしないでください。</p><p>実際に分かる範囲だけを投稿してください。間違った情報は発見を遅らせる可能性があります。</p><p>※警察・自治体などの公式サイトではありません。</p></div></details>
   <details class="quick-guide"><summary>💡 投稿方法・管理コードについて　›</summary><div class="quick-guide-body">① 状況を選ぶ　② 犬・猫と特徴を選ぶ　③ 地図でだいたいの場所を選ぶ　④ 写真があれば追加して投稿<br><b>投稿後の4文字の管理コードは保存してください。</b><br>「探しています」は60日掲載。まだ探している場合は投稿者本人が60日延長できます。</div></details>
 </div>
 </main>
