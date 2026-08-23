@@ -145,6 +145,35 @@ body{background:#edf2f7;color:var(--ink);font-family:-apple-system,BlinkMacSyste
     align-self: stretch !important;
   }  
 }  
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  html,
+  body {
+    width: 210mm;
+    height: 297mm;
+    overflow: hidden;
+  }
+
+  .paper {
+    width: 210mm !important;
+    height: 297mm !important;
+    max-height: 297mm !important;
+    min-height: 0 !important;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .photo-frame,
+  .location-card,
+  .detail,
+  .note,
+  .qr-panel {
+    border: 2px solid #222 !important;
+  }
 </style>
 </head>
 <body>
