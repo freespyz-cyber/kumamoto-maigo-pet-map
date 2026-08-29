@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>迷子ペットポスター</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+@page{size:A4 portrait;margin:0}
+*{box-sizing:border-box}
+html,body{margin:0;width:210mm;height:297mm;overflow:hidden;background:#fff}
+body{font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;color:#14213d}
+.paper{width:210mm;height:297mm;padding:5mm;display:grid;grid-template-columns:minmax(0,1fr) 43mm;grid-template-rows:14mm 25mm 67mm 19mm 29mm 19mm 1fr;gap:2mm;overflow:hidden}
+.brand{grid-column:1/-1;border-bottom:.4mm solid #d9e3f2;display:flex;align-items:center;justify-content:space-between;font-weight:800;font-size:5mm}
+.brand small{font-size:3.3mm;color:#64748b}
+.hero{grid-column:1/-1;display:flex;align-items:end;justify-content:space-between}
+.status{border:.5mm solid #d62828;border-radius:5mm;padding:1mm 4mm;color:#d62828;font-weight:800;font-size:4mm}
+h1{margin:1mm 0 0;font-size:10mm;line-height:1;color:#d62828}
+.location{border:.4mm solid #b8d0ff;border-radius:4mm;padding:2mm 4mm;color:#1d4e9b;font-weight:800;font-size:3.8mm;text-align:center}
+.location b{display:block;font-size:5mm;margin-top:1mm}
+.photo{grid-column:1;border:.6mm solid #34445d;border-radius:5mm;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#f3f6fa}
+.photo img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
+.qrpanel{grid-column:2;border:.4mm solid #c9d6e8;border-radius:4mm;text-align:center;padding:3mm 2mm;font-weight:800;font-size:3.3mm}
+.qrpanel strong{display:block;font-size:4mm;margin-bottom:2mm}
+#qr{width:31mm;height:31mm;margin:2mm auto}
+.qrpanel small{display:block;color:#2453ad;font-size:3mm}
+.summary{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between}
+.summary h2{margin:0;font-size:7mm}
+.summary p{margin:0;font-size:3.5mm;font-weight:700;color:#586b87}
+.details{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5mm}
+.detail{border:.35mm solid #d6e0ee;border-radius:3mm;padding:2mm 2.5mm}
+.detail label{display:block;color:#70819b;font-weight:700;font-size:2.8mm}
+.detail b{display:block;margin-top:1mm;font-size:3.8mm}
+.note{grid-column:1/-1;border:.4mm solid #f2cc79;background:#fffaf0;border-radius:3mm;padding:2.5mm;font-size:3.3mm}
+.note strong{display:block;color:#9a5200;margin-bottom:1mm}
+.footer{grid-column:1/-1;border-top:.3mm solid #d9e3f2;padding-top:2mm;font-size:2.4mm;color:#65748b}
+@media screen{body{background:#eaf0f7}.paper{margin:10px auto;background:#fff;box-shadow:0 0 20px #b8c4d4}}
+</style>
+</head>
+<body>
+<main class="paper">
+  <div class="brand"><span>🐾 熊本 迷子犬・迷子猫MAP</span><small id="postNo"></small></div>
+  <section class="hero"><div><div class="status" id="status">探しています</div><h1 id="headline">この子を探しています</h1></div><div class="location">📍 最後に確認された場所<b id="place">熊本県内</b></div></section>
+  <div class="photo"><img id="photo" alt="ペットの写真"></div>
+  <aside class="qrpanel"><strong>この子専用QRコード</strong><span>見かけた方は情報を送れます</span><div id="qr"></div><small>投稿番号：<span id="qrNo"></span></small></aside>
+  <section class="summary"><h2 id="animal">犬・猫</h2><p>見かけた方は、QRコードから情報をお寄せください</p></section>
+  <section class="details">
+    <div class="detail"><label>種類</label><b id="type">—</b></div><div class="detail"><label>犬種・猫種など</label><b id="breed">—</b></div><div class="detail"><label>毛色</label><b id="color">—</b></div>
+    <div class="detail"><label>大きさ</label><b id="size">—</b></div><div class="detail"><label>毛の長さ</label><b id="hair">—</b></div><div class="detail"><label>首輪・目印</label><b id="collar">—</b></div>
+  </section>
+  <section class="note"><strong>🔎 特徴・見分けるポイント</strong><span id="features">特徴の記載はありません。</span></section>
+  <footer class="footer">🔒 個人の電話番号や住所は掲載しません。地図上の位置は安全に配慮した「この辺」の目安です。</footer>
+</main>
+<script>
+const id=new URLSearchParams(location.search).get("id");
+const text=v=>v==null||v===""?"—":String(v);
+async function main(){
+  try{
+    const r=await fetch("/api/posts?id="+encodeURIComponent(id));
+    const d=await r.json(); const p=d.post||d;
+    const found=p.status==="found"||p.status==="見かけました";
+    document.getElementById("status").textContent=found?"見かけました":"探しています";
+    document.getElementById("status").style.color=found?"#ad5700":"#d62828";
+    document.getElementById("status").style.borderColor=found?"#ad5700":"#d62828";
+    document.getElementById("headline").textContent=found?"この子を見かけました":"この子を探しています";
+    document.getElementById("postNo").textContent="この子専用 / 投稿番号 "+text(p.id);
+    document.getElementById("qrNo").textContent=text(p.id);
+    document.getElementById("place").textContent=text(p.landmark||p.locationLabel||"熊本県内");
+    document.getElementById("animal").textContent=text((p.type==="猫"?"猫":"犬")+"・"+(p.breed||p.species||"不明"));
+    ["type","breed","color","size","hair","collar","features"].forEach(k=>{if(document.getElementById(k))document.getElementById(k).textContent=text(p[k]);});
+    if(p.imageUrl||p.photoUrl)document.getElementById("photo").src=p.imageUrl||p.photoUrl;
+    const u=new URL("/",location.origin);u.searchParams.set("sighting",p.id);
+    new QRCode(document.getElementById("qr"),{text:u.toString(),width:240,height:240,correctLevel:QRCode.CorrectLevel.M});
+  }catch(e){document.getElementById("place").textContent="熊本県内";}
+}
+main();
+</script>
+</body>
+</html>

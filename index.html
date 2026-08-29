@@ -212,7 +212,7 @@ main{padding-top:10px}
   <div id="allMap"></div>
   <div class="mapnote compact">※安全のため、正確な自宅位置ではなく「この辺」という目安で表示してください。</div>
 </section>
-<details class="message-howto"><summary>💬 メッセージの使い方　›</summary><div class="message-howto-body"><b>似た子を見た方：</b> 投稿カードの「この子かも？／情報を送る」から送信できます。<br><b>投稿した方：</b> 「📨 届いたメッセージを見る」から確認・返信できます。<br>🔒 内容は投稿カードには公開されません。</div></details>
+<details class="message-howto"><summary>💬 メッセージの使い方　›</summary><div class="message-howto-body"><b>似た子を見た方：</b> 投稿カードの「この子かも？／情報を送る」から送信できます。<br><b>投稿した方：</b> 「📨 届いたメッセージを見る（新着確認）」から確認・返信できます。<br>🔒 内容は投稿カードには公開されません。</div></details>
 <section class="box" id="latest">
   <div class="latest-title-row"><h2>📷 新着情報をすべて見る</h2><span class="latest-count" id="latestCount">0件</span></div>
   <div id="list"></div>
@@ -681,9 +681,9 @@ if(s==="探しています"){q.textContent="どの辺でいなくなりました
 else if(s==="見かけました"){q.textContent="どの辺で見かけましたか？";p.placeholder="例：○○交差点の近く"}
 else {q.textContent="どの辺で保護しましたか？";p.placeholder="例：○○公園の近く"}
 setTimeout(()=>{initPick();if(jump)formBox.scrollIntoView({behavior:"smooth"})},50)}
-document.querySelectorAll(".choices").forEach(g=>g.addEventListener("click",e=>{let b=e.target.closest(".choice");if(!b)return; if(g.classList.contains("multi")){b.classList.toggle("on");colors=[...g.querySelectorAll(".on")].map(x=>x.textContent.trim())}else{g.querySelectorAll(".choice").forEach(x=>x.classList.remove("on"));b.classList.add("on");document.getElementById(g.dataset.target).value=b.textContent.replace(/🐶|🐱/g,"").trim()}}));
+document.querySelectorAll(".choices").forEach(g=>g.addEventListener("click",e=>{let b=e.target.closest(".choice");if(!b)return; if(g.classList.contains("multi")){b.classList.toggle("on");colors=[...g.querySelectorAll(".on")].map(x=>x.textContent.trim())}else{g.querySelectorAll(".choice").forEach(x=>x.classList.remove("on"));b.classList.add("on");document.getElementById(g.dataset.target).value=b.textContent.replace(/🐶|🐱/g,"").trim();if(g.dataset.target==="animal"){setTimeout(()=>document.getElementById("whereGuide")?.scrollIntoView({behavior:"smooth",block:"center"}),80)}}}));
 function initPick(){if(pickMap){pickMap.invalidateSize();return}pickMap=L.map("map").setView([32.8031,130.7079],9);L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"© OpenStreetMap"}).addTo(pickMap);pickMap.on("click",e=>setPoint(e.latlng.lat,e.latlng.lng))}
-function setPoint(a,b){lat.value=a;lng.value=b;if(marker)marker.setLatLng([a,b]);else marker=L.marker([a,b]).addTo(pickMap);pickMap.setView([a,b],14)}
+function setPoint(a,b){const latEl=document.getElementById("lat"),lngEl=document.getElementById("lng");if(!latEl||!lngEl||!pickMap)return;latEl.value=a;lngEl.value=b;if(marker)marker.setLatLng([a,b]);else marker=L.marker([a,b]).addTo(pickMap);pickMap.setView([a,b],14)}
 function useLocation(){navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>setPoint(p.coords.latitude,p.coords.longitude),()=>alert("現在地を取得できませんでした。地図をタップしてください。")):alert("この端末では現在地を取得できません。")}
 form.addEventListener("submit",async e=>{
   e.preventDefault();
@@ -961,4 +961,4 @@ document.addEventListener("click", function(e){
   openSightReport(p);
 }, true);
 </script>
-</body></html>
+\n<script>\nconst formBoxObserver=new MutationObserver(()=>{const form=document.getElementById("formBox"),browse=document.getElementById("browseMap");if(form&&browse)browse.classList.toggle("posting-active",!form.classList.contains("hidden"))});\nformBoxObserver.observe(document.body,{subtree:true,attributes:true,attributeFilter:["class"]});\n</script>\n</body></html>
