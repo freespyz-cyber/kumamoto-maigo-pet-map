@@ -85,7 +85,7 @@ async function main(){
     document.getElementById("animal").textContent=text((p.animal||"ペット")+"・"+(p.breed||"不明"));
     document.getElementById("type").textContent=text(p.animal); document.getElementById("breed").textContent=text(p.breed); document.getElementById("color").textContent=text(Array.isArray(p.colors)?p.colors.join("・"):p.color); document.getElementById("size").textContent=text(p.size); document.getElementById("hair").textContent=text(p.hair); document.getElementById("collar").textContent=text(p.collar); document.getElementById("features").textContent=text(p.note);
     const photoSrc=String(p.img||p.imageUrl||p.photoUrl||"").replace(/\s/g,""); if(photoSrc)document.getElementById("photo").src=photoSrc;
-    const u=new URL("/poster.html",location.origin);u.searchParams.set("id",p.id);
+    const u=new URL("/p/"+encodeURIComponent(p.id),location.origin);
     new QRCode(document.getElementById("qr"),{text:u.toString(),width:600,height:600,correctLevel:QRCode.CorrectLevel.M});
   }catch(e){document.getElementById("place").textContent="熊本県内";}
 }
