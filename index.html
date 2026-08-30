@@ -784,7 +784,7 @@ function render(){
   setTimeout(()=>{try{allMap.invalidateSize()}catch(e){}},0);
 }
 
-function printPost(id){window.open('print-mobile.html?id='+encodeURIComponent(id),'_blank','noopener');}
+function printPost(id){window.location.href='print-mobile.html?id='+encodeURIComponent(id);}
 function contact(id){
   const p=posts.find(x=>String(x.id)===String(id));
   if(!p)return;
