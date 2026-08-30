@@ -44,7 +44,7 @@ h1{margin:1mm 0 0;font-size:10mm;line-height:1;color:#d62828}
 .photo img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
 .qrpanel{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-width:0}
 #qr{width:28mm;height:28mm;margin:3mm auto 1mm;flex:none;padding:1.5mm;background:#fff;box-sizing:content-box}
-#qr{width:28mm!important;height:28mm!important;max-width:28mm!important;max-height:28mm!important;display:block;object-fit:contain;image-rendering:auto}
+#qr{width:28mm!important;height:28mm!important;max-width:28mm!important;max-height:28mm!important;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#fff}#qr img,#qr canvas{width:28mm!important;height:28mm!important;display:block;image-rendering:pixelated}
 .qrpanel small{position:static;display:block;white-space:nowrap;font-size:2.6mm}
 
 /* align location and QR frames */
@@ -58,7 +58,7 @@ h1{margin:1mm 0 0;font-size:10mm;line-height:1;color:#d62828}
   <div class="brand"><span>🐾 熊本 迷子犬・迷子猫MAP</span><small id="postNo"></small></div>
   <section class="hero"><div><div class="status" id="status">探しています</div><h1 id="headline">この子を探しています</h1></div><div class="location">📍 最後に確認された場所<b id="place">熊本県内</b></div></section>
   <div class="photo"><img id="photo" alt="ペットの写真"></div>
-  <aside class="qrpanel"><strong>この子専用QRコード</strong><span>見かけた方は情報を送れます</span><img id="qr" alt="QRコード"><small>投稿番号：<span id="qrNo"></span></small></aside>
+  <aside class="qrpanel"><strong>この子専用QRコード</strong><span>見かけた方は情報を送れます</span><div id="qr" aria-label="QRコード"></div><small>投稿番号：<span id="qrNo"></span></small></aside>
   <section class="summary"><h2 id="animal">犬・猫</h2><p>見かけた方は、QRコードから情報をお寄せください</p></section>
   <section class="details">
     <div class="detail"><label>種類</label><b id="type">—</b></div><div class="detail"><label>犬種・猫種など</label><b id="breed">—</b></div><div class="detail"><label>毛色</label><b id="color">—</b></div>
@@ -86,11 +86,11 @@ async function main(){
     document.getElementById("type").textContent=text(p.animal); document.getElementById("breed").textContent=text(p.breed); document.getElementById("color").textContent=text(Array.isArray(p.colors)?p.colors.join("・"):p.color); document.getElementById("size").textContent=text(p.size); document.getElementById("hair").textContent=text(p.hair); document.getElementById("collar").textContent=text(p.collar); document.getElementById("features").textContent=text(p.note);
     const photoSrc=String(p.img||p.imageUrl||p.photoUrl||"").replace(/\s/g,""); if(photoSrc)document.getElementById("photo").src=photoSrc;
     const u=new URL("/p/"+encodeURIComponent(p.id),location.origin);
-    document.getElementById("qr").src="https://quickchart.io/qr?text="+encodeURIComponent(u.toString())+"&size=600&margin=2";
+    document.getElementById("qr").innerHTML=""; new QRCode(document.getElementById("qr"),{text:u.toString(),width:280,height:280,colorDark:"#000000",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
   }catch(e){document.getElementById("place").textContent="熊本県内";}
 }
 main();
-window.addEventListener("load",()=>setTimeout(()=>window.print(),700));
+window.addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="p"){e.preventDefault();window.print();}});
 </script>
 </body>
 </html>
