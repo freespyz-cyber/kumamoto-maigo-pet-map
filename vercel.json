@@ -21,6 +21,7 @@
     { "src": "/api/admin", "dest": "/admin.js" },
     { "src": "/api/maintenance", "dest": "/maintenance.js" },
     { "src": "/poster.html", "dest": "/poster.html" },
+    { "src": "/p/(\\d+)", "dest": "/poster.html?id=$1" },
     { "src": "/print-mobile.html", "dest": "/print-mobile.html" },
     { "src": "/hero-cover.jpg", "dest": "/hero-cover.jpg" },
     { "src": "/", "dest": "/index.html" },
