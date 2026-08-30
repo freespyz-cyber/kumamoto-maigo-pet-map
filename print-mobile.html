@@ -10,7 +10,7 @@
 *{box-sizing:border-box}
 html,body{margin:0;width:210mm;height:297mm;overflow:hidden;background:#fff}
 body{font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;color:#14213d}
-.paper{width:210mm;height:297mm;padding:5mm;display:grid;grid-template-columns:minmax(0,1fr) 38mm;grid-template-rows:14mm 25mm 90mm 19mm 29mm 19mm 1fr;gap:2mm;overflow:hidden}
+.paper{width:210mm;height:297mm;padding:5mm;display:grid;grid-template-columns:minmax(0,1fr) 38mm;grid-template-rows:14mm 25mm 98mm 19mm 29mm 19mm 1fr;gap:2mm;overflow:hidden}
 .brand{grid-column:1/-1;border-bottom:.4mm solid #d9e3f2;display:flex;align-items:center;justify-content:space-between;font-weight:800;font-size:5mm}
 .brand small{font-size:3.3mm;color:#64748b}
 .hero{grid-column:1/-1;display:flex;align-items:end;justify-content:space-between}
@@ -46,6 +46,11 @@ h1{margin:1mm 0 0;font-size:10mm;line-height:1;color:#d62828}
 #qr{width:39mm;height:39mm;margin:3mm auto 1mm;flex:none}
 #qr canvas{width:39mm!important;height:39mm!important;max-width:39mm!important;max-height:39mm!important;display:block;position:static!important}
 .qrpanel small{position:static;display:block;white-space:nowrap;font-size:2.6mm}
+
+/* align location and QR frames */
+.location{width:43mm;flex:none}
+.qrpanel{width:43mm;justify-self:stretch}
+.summary{padding-top:3mm}
 </style>
 </head>
 <body><div class="print-toolbar"><button type="button" onclick="window.print()">🖨️ 印刷する</button><a href="/">← 戻る</a></div>
