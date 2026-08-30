@@ -116,6 +116,8 @@ main{padding-top:10px}
 .sns-share-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .sns-share-btn{display:flex;align-items:center;justify-content:center;gap:7px;border:0;border-radius:12px;padding:11px 8px;color:#fff;font-weight:900;font-size:15px;text-decoration:none}
 .sns-x{background:#111827}.sns-line{background:#06c755}
+
+.print-post{width:100%;border:1px solid #94a3b8;background:#fff;color:#334155;border-radius:13px;padding:10px 8px;font-size:13px;font-weight:900;margin-top:8px}
 </style></head><body>
 <header class="site-header" id="pageTop">
   <div class="site-header-inner">
@@ -771,7 +773,7 @@ function render(){
       <div class="post-location">📍 ${escapeHtml(p.place||"この辺で登録")}</div>
       ${features.length?`<div class="feature-row">${features.join("")}</div>`:""}
       ${p.note?`<div class="post-note">${escapeHtml(p.note)}</div>`:""}
-      <div class="post-actions">
+      <div class="post-actions"><button class="print-post" type="button" onclick="printPost(${Number(p.id)})">🖨️ この投稿を印刷</button>
       ${p.resolved?"":(own
         ? `<button class="inbox" onclick="openOwnerInbox(${Number(p.id)})">📨 届いたメッセージを見る</button><button class="manage-code" onclick="showOwnerCode(${Number(p.id)})">🔑 管理コードを確認</button>`
         : `<button class="contact" onclick="openMessage(${Number(p.id)})">${p.status==="探しています"?"💬 この子を見た・似ている情報を送る":"💬 この子かも？ 投稿者に確認する"}</button>${p.status==="探しています"?`<button class="sighting-only" onclick="contact(${Number(p.id)})">👀 場所・時間だけ送る</button>`:""}<button class="claim" onclick="claimPost(${Number(p.id)})">🔑 投稿者の方はこちら</button>`)}
@@ -781,6 +783,8 @@ function render(){
   });
   setTimeout(()=>{try{allMap.invalidateSize()}catch(e){}},0);
 }
+
+function printPost(id){window.open('print-mobile.html?id='+encodeURIComponent(id),'_blank','noopener');}
 function contact(id){
   const p=posts.find(x=>String(x.id)===String(id));
   if(!p)return;
