@@ -57,7 +57,7 @@ const text=v=>v==null||v===""?"—":String(v);
 async function main(){
   try{
     const r=await fetch("/api/posts?id="+encodeURIComponent(id));
-    const d=await r.json(); const p=d.post||d;
+    const d=await r.json(); const p=Array.isArray(d)?d[0]:(d.post||d);
     const found=p.status==="found"||p.status==="見かけました";
     document.getElementById("status").textContent=found?"見かけました":"探しています";
     document.getElementById("status").style.color=found?"#ad5700":"#d62828";
@@ -65,10 +65,10 @@ async function main(){
     document.getElementById("headline").textContent=found?"この子を見かけました":"この子を探しています";
     document.getElementById("postNo").textContent="この子専用 / 投稿番号 "+text(p.id);
     document.getElementById("qrNo").textContent=text(p.id);
-    document.getElementById("place").textContent=text(p.landmark||p.locationLabel||"熊本県内");
+    document.getElementById("place").textContent=text(p.place||p.landmark||p.locationLabel||"熊本県内");
     document.getElementById("animal").textContent=text((p.type==="猫"?"猫":"犬")+"・"+(p.breed||p.species||"不明"));
-    ["type","breed","color","size","hair","collar","features"].forEach(k=>{if(document.getElementById(k))document.getElementById(k).textContent=text(p[k]);});
-    if(p.imageUrl||p.photoUrl)document.getElementById("photo").src=p.imageUrl||p.photoUrl;
+    document.getElementById("type").textContent=text(p.animal); document.getElementById("breed").textContent=text(p.breed); document.getElementById("color").textContent=text(Array.isArray(p.colors)?p.colors.join("・"):p.color); document.getElementById("size").textContent=text(p.size); document.getElementById("hair").textContent=text(p.hair); document.getElementById("collar").textContent=text(p.collar); document.getElementById("features").textContent=text(p.note);
+    if(p.img||p.imageUrl||p.photoUrl)document.getElementById("photo").src=p.imageUrl||p.photoUrl;
     const u=new URL("/",location.origin);u.searchParams.set("sighting",p.id);
     new QRCode(document.getElementById("qr"),{text:u.toString(),width:240,height:240,correctLevel:QRCode.CorrectLevel.M});
   }catch(e){document.getElementById("place").textContent="熊本県内";}
