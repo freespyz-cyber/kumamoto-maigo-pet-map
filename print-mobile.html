@@ -35,9 +35,11 @@ h1{margin:1mm 0 0;font-size:10mm;line-height:1;color:#d62828}
 .note strong{display:block;color:#9a5200;margin-bottom:1mm}
 .footer{grid-column:1/-1;border-top:.3mm solid #d9e3f2;padding-top:2mm;font-size:2.4mm;color:#65748b}
 @media screen{body{background:#eaf0f7}.paper{margin:10px auto;background:#fff;box-shadow:0 0 20px #b8c4d4}}
+
+.print-toolbar{display:flex;justify-content:center;gap:10px;padding:12px;background:#eef3f9;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif}.print-toolbar button{border:0;border-radius:10px;padding:10px 22px;background:#0f172a;color:#fff;font-weight:900;font-size:16px}.print-toolbar a{display:inline-flex;align-items:center;border:1px solid #cbd5e1;border-radius:10px;padding:10px 18px;background:#fff;color:#334155;text-decoration:none;font-weight:900}@media print{.print-toolbar{display:none}}
 </style>
 </head>
-<body>
+<body><div class="print-toolbar"><button type="button" onclick="window.print()">🖨️ 印刷する</button><a href="/">← 戻る</a></div>
 <main class="paper">
   <div class="brand"><span>🐾 熊本 迷子犬・迷子猫MAP</span><small id="postNo"></small></div>
   <section class="hero"><div><div class="status" id="status">探しています</div><h1 id="headline">この子を探しています</h1></div><div class="location">📍 最後に確認された場所<b id="place">熊本県内</b></div></section>
