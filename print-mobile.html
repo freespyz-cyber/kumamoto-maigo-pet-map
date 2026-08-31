@@ -51,6 +51,21 @@ h1{margin:1mm 0 0;font-size:10mm;line-height:1;color:#d62828}
 .location{width:60mm;flex:none}
 .qrpanel{width:60mm;justify-self:stretch}
 .summary{padding-top:3mm}
+
+@media screen and (max-width:720px){
+html,body{width:100%;height:auto;min-height:100%;overflow-x:hidden}
+.paper{width:calc(100% - 16px);height:auto;min-height:0;margin:8px auto;padding:14px;display:grid;grid-template-columns:1fr;grid-template-rows:auto;gap:10px;overflow:visible}
+.brand,.hero,.photo,.qrpanel,.summary,.details,.note,.footer{grid-column:1}
+.hero{display:flex;flex-direction:column;align-items:stretch;gap:10px}
+.location{width:100%;}
+.photo{height:auto;min-height:0;aspect-ratio:4/3}
+.photo img{width:100%;height:100%;object-fit:contain}
+.qrpanel{width:100%;min-height:0;padding:14px;display:flex;flex-direction:column;align-items:center}
+#qr{width:180px!important;height:180px!important;max-width:70vw!important;max-height:70vw!important}
+#qr img,#qr canvas{width:100%!important;height:100%!important}
+.summary{display:block;padding-top:0}.summary p{margin-top:4px}
+.details{grid-template-columns:repeat(2,1fr)}
+}
 </style>
 </head>
 <body><div class="print-toolbar"><button type="button" onclick="window.print()">🖨️ 印刷する</button><a href="/">← 戻る</a></div>
