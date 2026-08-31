@@ -75,6 +75,11 @@ html,body{width:100%;height:auto;min-height:100%;overflow-x:hidden}
 .paper{width:210mm;height:297mm;min-height:0;margin:8px 0 0 8px;padding:8mm 10mm;display:grid;grid-template-columns:minmax(0,1fr) 60mm;grid-template-rows:14mm 25mm 98mm 19mm 29mm 19mm 1fr;gap:2mm;overflow:hidden;transform:scale(.46);transform-origin:top left}
 .brand,.hero{grid-column:1/-1}.photo{grid-column:1;aspect-ratio:auto;height:auto}.qrpanel{grid-column:2;width:60mm;min-height:0;padding:3mm 2mm}.location{width:60mm}.summary{grid-column:1/-1;display:flex}.details{grid-column:1/-1;grid-template-columns:repeat(3,1fr)}.note,.footer{grid-column:1/-1}
 }
+
+@media screen and (max-width:720px){
+.paper .hero{display:flex;flex-direction:row;align-items:end;justify-content:space-between;gap:0}
+.paper .photo img{width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain}
+}
 </style>
 </head>
 <body><div class="print-toolbar"><button type="button" onclick="window.print()">🖨️ 印刷する</button><a href="/">← 戻る</a></div>
