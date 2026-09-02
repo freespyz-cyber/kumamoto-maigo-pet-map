@@ -3,6 +3,7 @@
   "version": 2,
   "builds": [
     { "src": "index.html", "use": "@vercel/static" },
+    { "src": "admin.html", "use": "@vercel/static" },
     { "src": "hero-cover.jpg", "use": "@vercel/static" },
     { "src": "poster.html", "use": "@vercel/static" },
     { "src": "print-mobile.html", "use": "@vercel/static" },
@@ -20,6 +21,7 @@
     { "src": "/api/health", "dest": "/health.js" },
     { "src": "/api/admin", "dest": "/admin.js" },
     { "src": "/api/maintenance", "dest": "/maintenance.js" },
+    { "src": "/admin.html", "dest": "/admin.html" },
     { "src": "/poster.html", "dest": "/poster.html" },
     { "src": "/p/(\\d+)", "dest": "/poster.html?id=$1" },
     { "src": "/print-mobile.html", "dest": "/print-mobile.html" },
