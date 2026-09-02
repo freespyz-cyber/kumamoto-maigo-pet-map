@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>運営者管理｜熊本 迷子犬・迷子猫MAP</title>
+<style>
+:root{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;color:#0f172a;background:#f1f5f9}
+*{box-sizing:border-box}body{margin:0;padding:20px}.card{max-width:680px;margin:20px auto;background:#fff;border-radius:22px;padding:22px;box-shadow:0 12px 40px #0f172a18}
+h1{font-size:24px;margin:0 0 8px}.note{color:#475569;line-height:1.7}.warn{background:#fff7ed;border:1px solid #fdba74;color:#9a3412;border-radius:14px;padding:12px;line-height:1.65}
+label{display:block;font-weight:800;margin:18px 0 6px}input{width:100%;font-size:18px;padding:13px;border:1px solid #cbd5e1;border-radius:13px}
+button,a{display:block;width:100%;padding:14px;margin-top:10px;border-radius:14px;font-size:17px;font-weight:900;text-align:center;text-decoration:none}
+.login{border:0;background:#0f172a;color:#fff}.delete{border:0;background:#dc2626;color:#fff}.delete:disabled{opacity:.5}.back{border:1px solid #cbd5e1;background:#fff;color:#334155}
+.ok,.error{margin-top:12px;border-radius:13px;padding:11px;line-height:1.6}.ok{background:#ecfdf5;color:#166534}.error{background:#fef2f2;color:#991b1b}.hidden{display:none}
+.list{margin-top:14px;border:1px solid #e2e8f0;border-radius:14px;overflow:hidden}.row{padding:10px 12px;border-bottom:1px solid #e2e8f0}.row:last-child{border:0}.row b{display:block}.row small{color:#64748b}
+</style>
+</head>
+<body>
+<main class="card">
+<h1>🔐 運営者管理</h1>
+<p class="note">公開前に作成したテスト投稿だけを削除します。地図・投稿機能・設定は残ります。</p>
+<div class="warn">⚠️ 完全削除後は元に戻せません。対象は投稿番号 1〜20のうち、確認済みの16件だけです。</div>
+<div id="loginArea">
+<label for="password">管理者パスワード</label>
+<input id="password" type="password" autocomplete="current-password">
+<button class="login" type="button" onclick="login()">管理画面を開く</button>
+</div>
+<div id="panel" class="hidden">
+<p id="count" class="note"></p>
+<div id="list" class="list"></div>
+<button id="deleteButton" class="delete" type="button" onclick="deleteTests()">確認済みテスト投稿を削除</button>
+</div>
+<div id="message" class="hidden"></div>
+<a class="back" href="/">← 迷子MAPへ戻る</a>
+</main>
+<script>
+const TEST_IDS=[1,2,3,4,5,9,10,11,12,13,15,16,17,18,19,20];
+let secret="",rows=[];
+async function call(action,id){
+  const r=await fetch("/api/admin",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:secret,action,id})});
+  const data=await r.json().catch(()=>({}));
+  if(!r.ok){const e=new Error(data.error||"処理できませんでした。");e.status=r.status;throw e}
+  return data;
+}
+function show(text,error=false){
+  const m=document.getElementById("message");m.textContent=text;m.className=error?"error":"ok";
+}
+function render(){
+  const targets=rows.filter(p=>TEST_IDS.includes(Number(p.id)));
+  document.getElementById("count").textContent="削除対象："+targets.length+"件";
+  document.getElementById("list").innerHTML=targets.map(p=>'<div class="row"><b>#'+Number(p.id)+'　'+esc(p.animal||"")+'・'+esc(p.breed||"")+'</b><small>'+esc(p.status||"")+' ／ '+esc(p.place||"場所未記入")+'</small></div>').join("");
+  document.getElementById("deleteButton").disabled=targets.length===0;
+}
+function esc(v){return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
+async function login(){
+  secret=document.getElementById("password").value;
+  if(!secret){show("管理者パスワードを入力してください。",true);return}
+  try{
+    const data=await call("list");
+    rows=data.posts||[];
+    document.getElementById("loginArea").classList.add("hidden");
+    document.getElementById("panel").classList.remove("hidden");
+    render();show("管理者として確認できました。");
+  }catch(e){secret="";show(e.message,true)}
+}
+async function deleteTests(){
+  const targets=rows.filter(p=>TEST_IDS.includes(Number(p.id)));
+  if(targets.length===0)return;
+  if(!confirm("表示中のテスト投稿"+targets.length+"件を削除しますか？"))return;
+  if(!confirm("最終確認です。完全削除すると元に戻せません。実行しますか？"))return;
+  const btn=document.getElementById("deleteButton");btn.disabled=true;btn.textContent="削除しています…";
+  try{
+    for(const p of targets){
+      if(p.moderationState==="public")await call("hide",Number(p.id));
+      await call("delete",Number(p.id));
+    }
+    const data=await call("list");rows=data.posts||[];render();
+    show("テスト投稿"+targets.length+"件を削除しました。迷子MAPは0件の状態です。");
+    btn.textContent="削除完了";
+  }catch(e){show("途中で止まりました："+e.message,true);btn.disabled=false;btn.textContent="残りのテスト投稿を削除"}
+}
+</script>
+</body>
+</html>
