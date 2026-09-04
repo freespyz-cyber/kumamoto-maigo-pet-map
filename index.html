@@ -123,6 +123,8 @@ main{padding-top:10px}
 .hero-visual{aspect-ratio:890 / 596!important;min-height:0!important}
 .hero-visual img{height:100%!important;aspect-ratio:890 / 596!important;object-fit:contain!important;object-position:center!important}
 .preview-pet-photo,.preview-pet-placeholder{width:100%!important;height:auto!important;min-height:0!important;aspect-ratio:1 / 1;object-fit:cover}
+/* スマホの固定メニューに隠れない移動位置 */
+#pageTop,#browseMap,#latest,#aboutSite,#formBox,.post{scroll-margin-top:78px;scroll-margin-bottom:104px}
 </style></head><body>
 <header class="site-header" id="pageTop">
   <div class="site-header-inner">
@@ -148,7 +150,7 @@ main{padding-top:10px}
     <button type="button" class="animal-filter" data-animal-filter="犬" onclick="setAnimalFilter('犬',this)">🐶 犬</button>
     <button type="button" class="animal-filter" data-animal-filter="猫" onclick="setAnimalFilter('猫',this)">🐱 猫</button>
   </div>
-  <button type="button" class="hero-primary" onclick="document.getElementById('browseMap').scrollIntoView({behavior:'smooth'})">🗺️ 地図で近くの情報を見る</button>
+  <button type="button" class="hero-primary" onclick="document.getElementById('browseMap').scrollIntoView({behavior:'smooth',block:'start'})">🗺️ 地図で近くの情報を見る</button>
   <div class="action-label">情報を投稿する</div>
   <div class="three">
     <button class="big lost" onclick="begin('探しています')"><span class="action-icon">🔍</span><span class="action-copy">迷子を探しています</span></button>
@@ -163,7 +165,7 @@ main{padding-top:10px}
     <span class="latest-count" id="latestPreviewCount">0件</span>
   </div>
   <div class="latest-preview-row" id="latestPreview"></div>
-  <button type="button" class="latest-preview-all" onclick="document.getElementById('latest').scrollIntoView({behavior:'smooth'})">すべての新着情報を見る　›</button>
+  <button type="button" class="latest-preview-all" onclick="document.getElementById('latest').scrollIntoView({behavior:'smooth',block:'start'})">すべての新着情報を見る　›</button>
 </section>
 
 
@@ -234,6 +236,15 @@ main{padding-top:10px}
     </div>
   </details>
   <div class="support-lite"><strong>☕ 運営支援について</strong><br>現在は寄付・支援金の受付を行っていません。将来、維持費のための仕組みを用意する場合も、寄付の有無で利用機能が変わることはありません。</div>
+  <details class="about-collapsed admin-tools">
+    <summary>🔐 管理者用　›</summary>
+    <div class="about-body">
+      <p><strong>投稿データを全件削除します。</strong>この操作は元に戻せません。</p>
+      <label for="adminPassword">管理者パスワード</label>
+      <input id="adminPassword" type="password" autocomplete="current-password" placeholder="管理者パスワードを入力" style="width:100%;box-sizing:border-box;margin:8px 0;padding:12px;border:1px solid #cbd5e1;border-radius:10px">
+      <button type="button" onclick="resetAllPosts()" style="width:100%;padding:13px;border:0;border-radius:12px;background:#b91c1c;color:#fff;font-weight:900">投稿データを全件削除</button>
+    </div>
+  </details>
 </section>
 
 
@@ -257,10 +268,10 @@ main{padding-top:10px}
   </div>
 </section>
 <nav class="bottom-nav" aria-label="メインメニュー">
-  <button type="button" onclick="document.getElementById('pageTop').scrollIntoView({behavior:'smooth'})"><span class="nav-icon">🏠</span>トップ</button>
-  <button type="button" onclick="document.getElementById('browseMap').scrollIntoView({behavior:'smooth'})"><span class="nav-icon">🗺️</span>地図</button>
+  <button type="button" onclick="document.getElementById('pageTop').scrollIntoView({behavior:'smooth',block:'start'})"><span class="nav-icon">🏠</span>トップ</button>
+  <button type="button" onclick="document.getElementById('browseMap').scrollIntoView({behavior:'smooth',block:'start'})"><span class="nav-icon">🗺️</span>地図</button>
   <button type="button" class="nav-post" onclick="openPostChooser()"><span class="nav-icon">＋</span>投稿</button>
-  <button type="button" onclick="document.getElementById('latest').scrollIntoView({behavior:'smooth'})"><span class="nav-icon">🐾</span>新着</button>
+  <button type="button" onclick="document.getElementById('latest').scrollIntoView({behavior:'smooth',block:'start'})"><span class="nav-icon">🐾</span>新着</button>
 </nav>
 <footer>試作版 v3.1.1（写真＋直感操作＋新着上部表示）｜本名・電話番号・正確な自宅住所などは公開しないでください</footer>
 <script>
@@ -271,6 +282,16 @@ function shareToLine(){ window.open("https://social-plugins.line.me/lineit/share
 async function copySiteUrl(){
   try { await navigator.clipboard.writeText(siteShareUrl); alert("サイトURLをコピーしました。"); }
   catch(e) { prompt("サイトURLをコピーしてください。", siteShareUrl); }
+}
+async function resetAllPosts(){
+  const input=document.getElementById("adminPassword"),password=String(input?.value||"");
+  if(!password){alert("管理者パスワードを入力してください。");input?.focus();return}
+  if(!confirm("投稿データをすべて完全削除します。よろしいですか？"))return;
+  if(!confirm("この操作は元に戻せません。本当に全削除しますか？"))return;
+  try{
+    await apiJson("/api/admin",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"reset",password})});
+    posts=[];render();input.value="";alert("投稿データをすべて削除しました。");
+  }catch(ex){alert(ex.message||"全削除に失敗しました。");}
 }
 </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

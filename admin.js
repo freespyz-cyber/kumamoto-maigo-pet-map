@@ -141,6 +141,14 @@ export default async function handler(req,res){
     if(!(await requireAdmin(req,res,b)))return;
     const action=cleanText(b.action,30);
 
+    if(action==="reset"){
+      const rows=await sql`SELECT COUNT(*)::int AS count FROM pet_posts`;
+      const count=Number(rows[0]?.count||0);
+      await sql`INSERT INTO pet_admin_log(action,note) VALUES('reset',${`管理者による全投稿完全削除（${count}件）`})`;
+      await sql`DELETE FROM pet_posts`;
+      return res.status(200).json({ok:true,reset:true,deleted:count});
+    }
+
     if(action==="list"){
       const posts=await sql`
         SELECT id,status,animal,breed,place,note,resolved,moderation_state,moderation_note,created_at,
