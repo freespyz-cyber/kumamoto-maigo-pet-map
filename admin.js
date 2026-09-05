@@ -41,6 +41,8 @@ async function expireDueSearchingPosts(){
     UPDATE pet_posts
     SET moderation_state='expired',moderation_note='掲載期間60日が経過',moderation_updated_at=NOW(),expired_at=COALESCE(expired_at,NOW())
     WHERE moderation_state='public' AND status='探しています' AND resolved=FALSE
+      AND COALESCE(place,'') NOT LIKE '%投稿サンプル%'
+      AND COALESCE(note,'') NOT LIKE '%投稿サンプル%'
       AND listing_expires_at IS NOT NULL AND listing_expires_at<=NOW()
   `;
 }

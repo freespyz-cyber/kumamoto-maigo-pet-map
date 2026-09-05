@@ -41,6 +41,8 @@ async function expireDueSearchingPosts(){
       AND status='探しています'
       AND resolved=FALSE
       AND listing_expires_at IS NOT NULL
+      AND COALESCE(place,'') NOT LIKE '%投稿サンプル%'
+      AND COALESCE(note,'') NOT LIKE '%投稿サンプル%'
       AND listing_expires_at <= NOW()
   `;
 }
