@@ -790,6 +790,7 @@ function render(){
   list.innerHTML=visible.length?"":'<div class="empty" style="grid-column:1/-1">条件に合う投稿はまだありません。</div>';
   visible.forEach(p=>{
     const icon=p.status==="探しています"?"🔴":p.status==="見かけました"?"🟠":"🟢";
+    const cls=p.status==="探しています"?"lost":p.status==="見かけました"?"seen":"safe";
     const latN=Number(p.lat),lngN=Number(p.lng);
     if(Number.isFinite(latN)&&Number.isFinite(lngN)){
       const pinIcon=L.divIcon({className:"status-pin-wrap",html:`<span class="status-pin ${cls}" aria-hidden="true"></span>`,iconSize:[28,28],iconAnchor:[14,28],popupAnchor:[0,-25]});
