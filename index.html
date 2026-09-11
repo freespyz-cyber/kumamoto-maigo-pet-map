@@ -870,7 +870,7 @@ function render(){
       ${features.length?`<div class="feature-row">${features.join("")}</div>`:""}
       ${p.note?`<div class="post-note">${escapeHtml(p.note)}</div>`:""}
       <div class="post-actions">
-      <button class="claim" onclick="location.href='poster.html?id=${Number(p.id)}'">🖨️ ポスターを見る</button>
+      <button class="claim" onclick="location.href='poster.html?id=${Number(p.id)}'">${Number(p.id)===23?"🖨️ サンプルポスターを見る":"🖨️ ポスターを見る"}</button>
       ${own
         ? `<button class="inbox" onclick="openOwnerInbox(${Number(p.id)})">📨 届いたメッセージを見る</button><button class="manage-code" onclick="showOwnerCode(${Number(p.id)})">🔑 管理コードを確認</button><button class="claim" onclick="openOwnerAuthModal(${Number(p.id)},'withdraw')">🗑️ この投稿を取り下げる</button>`
         : p.resolved?"":(
