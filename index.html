@@ -136,20 +136,14 @@ main{padding-top:10px}
   #list .post-photo,#list .post-photo-placeholder{width:100%!important;height:auto!important;aspect-ratio:4 / 3!important;object-fit:cover}
 }
 
-/* モバイルブラウザのデスクトップ幅表示にも対応 */
-@media (max-width: 1100px){
-  #list{grid-template-columns:minmax(0,1fr)!important}
-  #list .post{width:100%;min-width:0;max-width:100%}
-}
-
-/* タッチ端末では表示幅に関係なく投稿一覧を1列にする */
-@media (pointer: coarse), (hover: none){
+/* スマホ幅だけ投稿一覧を1列にする */
+@media (max-width:760px){
   #list{grid-template-columns:minmax(0,1fr)!important}
   #list .post{width:100%;min-width:0;max-width:100%}
 }
 
 /* スマホ投稿写真の高さを抑えてカードをコンパクトにする */
-@media (pointer: coarse), (hover: none), (max-width: 1100px){
+@media (max-width:760px){
   #list .post-photo,#list .post-photo-placeholder{
     width:100%!important;
     height:220px!important;
