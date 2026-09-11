@@ -170,6 +170,14 @@ main{padding-top:10px}
 /* 投稿一覧の最終修正：狭い2列状態を残さず、常に親幅いっぱいの1列 */
 #list{display:grid!important;grid-template-columns:minmax(0,1fr)!important;width:100%!important}
 #list .post{display:block!important;width:100%!important;min-width:0!important;max-width:none!important}
+
+/* スマホ相当の広いビューポートでもページ本体を画面幅に合わせる */
+@media (max-width: 1300px){
+  main,#aboutSite{max-width:none;width:100%}
+  .site-header-inner,.safety-strip{max-width:none;width:100%}
+  #latest,#list{width:100%!important}
+  #list .post{width:100%!important}
+}
 </style><script async src="https://www.googletagmanager.com/gtag/js?id=G-KK34ZPXN5B"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
