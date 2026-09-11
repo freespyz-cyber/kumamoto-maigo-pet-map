@@ -125,6 +125,16 @@ main{padding-top:10px}
 .preview-pet-photo,.preview-pet-placeholder{width:100%!important;height:auto!important;min-height:0!important;aspect-ratio:1 / 1;object-fit:cover}
 /* スマホの固定メニューに隠れない移動位置 */
 #pageTop,#browseMap,#latest,#aboutSite,#formBox,.post{scroll-margin-top:78px;scroll-margin-bottom:104px}
+
+/* スマホ表示修正：投稿カードを1列・画面幅いっぱいにする */
+@media (max-width: 760px){
+  html,body{width:100%;max-width:100%;overflow-x:hidden}
+  main{width:100%;max-width:100%;padding-left:12px;padding-right:12px}
+  #latest{width:100%;max-width:100%;padding-left:0;padding-right:0}
+  #list{width:100%;display:grid;grid-template-columns:minmax(0,1fr)!important;gap:12px}
+  #list .post{width:100%;min-width:0;max-width:100%}
+  #list .post-photo,#list .post-photo-placeholder{width:100%!important;height:auto!important;aspect-ratio:4 / 3!important;object-fit:cover}
+}
 </style><script async src="https://www.googletagmanager.com/gtag/js?id=G-KK34ZPXN5B"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
