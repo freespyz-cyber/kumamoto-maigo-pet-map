@@ -141,6 +141,12 @@ main{padding-top:10px}
   #list{grid-template-columns:minmax(0,1fr)!important}
   #list .post{width:100%;min-width:0;max-width:100%}
 }
+
+/* タッチ端末では表示幅に関係なく投稿一覧を1列にする */
+@media (pointer: coarse), (hover: none){
+  #list{grid-template-columns:minmax(0,1fr)!important}
+  #list .post{width:100%;min-width:0;max-width:100%}
+}
 </style><script async src="https://www.googletagmanager.com/gtag/js?id=G-KK34ZPXN5B"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
