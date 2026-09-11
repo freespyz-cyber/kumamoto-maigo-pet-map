@@ -147,6 +147,17 @@ main{padding-top:10px}
   #list{grid-template-columns:minmax(0,1fr)!important}
   #list .post{width:100%;min-width:0;max-width:100%}
 }
+
+/* スマホ投稿写真の高さを抑えてカードをコンパクトにする */
+@media (pointer: coarse), (hover: none), (max-width: 1100px){
+  #list .post-photo,#list .post-photo-placeholder{
+    width:100%!important;
+    height:220px!important;
+    min-height:0!important;
+    aspect-ratio:auto!important;
+    object-fit:cover;
+  }
+}
 </style><script async src="https://www.googletagmanager.com/gtag/js?id=G-KK34ZPXN5B"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
